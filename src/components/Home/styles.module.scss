@@ -1,0 +1,54 @@
+.homeContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 5rem 1fr 1fr 5rem;
+  grid-template-areas:
+  "imgBg nav" 
+  "imgBg section"
+  "imgBg section"
+  "imgBg .";
+
+  height: 100vh;
+
+  .backgroundImg{
+    grid-area: imgBg;
+
+    width: 700px;
+    height: 100vh;
+  }
+
+  section {
+    grid-area: section;
+    
+    img {
+      display: block;
+      width: 270px;
+  
+      margin: 2rem auto 0;
+
+      border-radius: 270px;
+    }
+
+    p {
+      margin: 2rem;
+
+      font-size: 22px;
+      text-align: justify;
+    }
+  }
+
+  button {
+    display: flex;
+    justify-content: flex-end;
+
+    width: 100%;
+    
+    background: none;
+    img {
+      
+      right: 0;
+      margin: 0 2rem;
+    }
+    
+  }
+}
