@@ -9,9 +9,10 @@ import styles from './styles.module.scss'
 export function Home(){
   return (
     <div className={styles.homeContainer} id="home">
+      
       <img src={bgImg} alt="" className={styles.backgroundImg}/>
 
-      <NavBar />
+      {/* <NavBar /> */}
 
       <section>
         <img src={logoImg} alt="Logo Doce&Cia" />

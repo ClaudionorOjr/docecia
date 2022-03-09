@@ -1,20 +1,25 @@
 .homeContainer {
   display: grid;
+  height: 100vh;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 5rem 1fr 1fr 5rem;
   grid-template-areas:
-  "imgBg nav" 
+  "navbar navbar" 
   "imgBg section"
   "imgBg section"
-  "imgBg .";
+  "imgBg buttonWpp";
 
-  height: 100vh;
+  header {
+    grid-area: navbar;
+  }
 
   .backgroundImg{
     grid-area: imgBg;
 
-    width: 700px;
-    height: 100vh;
+    // width: 500px;
+    margin: 0 auto;
+    background-size: contain;
+    height: calc(100vh - 5rem);
   }
 
   section {
@@ -38,14 +43,15 @@
   }
 
   button {
+    grid-area: buttonWpp ;
     display: flex;
     justify-content: flex-end;
 
     width: 100%;
     
     background: none;
-    img {
-      
+
+    img {  
       right: 0;
       margin: 0 2rem;
     }

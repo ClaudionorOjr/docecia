@@ -1,0 +1,51 @@
+.signInButton {
+  height: 3rem;
+  border-radius: 3rem;
+  background: #1f2729;
+  border: 0;
+  padding: 0 1.55rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #FFF;
+
+  transition: filter  0.2s;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+
+}
+
+.signOutButton {
+
+  height: 3rem;
+  border-radius: 3rem;
+  background: #1f2729;
+  border: 0;
+  padding: 0 .5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #FFF;
+
+  transition: filter  0.2s;
+
+  img {
+    margin-right: 1rem;
+    width: 40px;
+    border-radius: 99px;
+  }
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+  
+  svg.closeIcon {
+    margin: 0 .5rem;
+  }
+}

@@ -1,0 +1,38 @@
+.cakeCard {
+  display: flex;
+  width: 800px;
+  margin: 2rem auto;
+
+  border-radius: 5px;
+  background: var(--gray-300);
+
+  img {
+    margin: 1rem;
+    width: 220px;
+  }
+
+  .cakeInfo {
+    margin: 1rem;
+
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    .cakeSize {
+      label {
+        margin-right: 1rem ;
+        font-size: 20px;
+      }
+    }
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    margin: 25% auto 5%;
+    
+    border-radius: 5px;
+    border: 1px solid #000;
+  }
+}

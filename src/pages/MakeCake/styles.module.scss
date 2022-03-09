@@ -1,0 +1,91 @@
+.cakeBatters {
+  display: flex;
+
+  justify-content: space-evenly;
+
+  .batter {
+    width: 150px;
+    height: 150px;
+    border-radius: 5px;
+    // border-style: outset;
+    border: 5px outset;
+    background: #c4c4c4;
+  
+    img, p {
+      display: block;
+      width: fit-content;
+      margin: 15px auto 5px;
+    }
+
+    // &:hover {
+    //   border-style: inset ;
+    // }
+
+    input[type='checkbox'] {
+      display: none;
+    }
+
+  }
+
+}
+
+.fillings {
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+
+  margin: auto;
+
+  label {
+    width: 150px;
+    background-color: #b6b6b6;
+    text-transform: capitalize;
+  }
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 0.25fr, 1fr, 0.25fr;
+  grid-template-areas: 
+  "title-additional title-observation" 
+  "additional observation"
+  ". button";
+}
+
+.additional {
+  grid-area: additional;
+  
+  & > label {
+    margin-left: 50px;
+  }
+
+  .additionalBox {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    width: 100px;
+    height: 100px;
+
+    margin: 10px 50px;
+
+    border-radius: 5px;
+
+    background: #c4c4c4;
+
+  }
+}
+
+.observation {
+  grid-area: observation;
+
+  div{
+    margin-left: 50px
+  }
+}
+
+.buttonAddBag {
+  grid-area: button;
+}
