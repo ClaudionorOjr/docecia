@@ -4,13 +4,12 @@ import 'firebase/auth'
 import 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDwMIdZQfNo3rqxs2sbLsk6Y0mut5WUdbg",
-  authDomain: "docecia-bc857.firebaseapp.com",
-  projectId: "docecia-bc857",
-  storageBucket: "docecia-bc857.appspot.com",
-  messagingSenderId: "424091925920",
-  appId: "1:424091925920:web:5962d8eb31e54b52c038c5",
-  measurementId: "G-54HRD71D14"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 firebase.initializeApp(firebaseConfig)

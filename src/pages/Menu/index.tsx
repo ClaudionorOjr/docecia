@@ -1,30 +1,24 @@
 import styles from './styles.module.scss'
 
 import { Card } from './Card'
-
-// interface MenuProps {
-//   sizes: Array<number>
-// }
+import { firestore } from '../../services/firebase'
+import { useEffect, useState } from 'react'
 
 export function Menu(){
-  // let sizeChecked = document.querySelectorAll("input[type='radio']")
-  // // let sizeChecked = document.getElementsByName('size')
-
-  // for (let i = 0; i < sizeChecked.length; i++) {
-  //   sizeChecked[i] as HTMLInputElement
-  //   console.log(typeof sizeChecked[i])
-  //   // if ((sizeChecked[i] as HTMLInputElement).checked) {
-  //   //   console.log(sizeChecked[i])
-  //   // }
-  // }
-
-  // console.log(sizeChecked)
-  // let selected = document.querySelector('input[type="radio"]:checked') as HTMLInputElement
+  const [cakes, setCakes] = useState<string[]>([])
   
-  // let valueSelected = selected.value
-  // console.log(valueSelected)
+  useEffect(()=>{
+    const vetorAux: string[] = []
+    firestore.collection("cakes").get().then(
+      (querySnapshot)=>{
+        querySnapshot.forEach((cakeDoc) =>{
+          vetorAux.push(cakeDoc.id) // O nome dos bolos está no id
+        })
 
-  const cakes = ['naked cake', 'vulcão', 'festa']
+        setCakes(vetorAux)
+      })
+
+  },[])
 
   return (
     <div className={styles.menuContainer} id="menu">

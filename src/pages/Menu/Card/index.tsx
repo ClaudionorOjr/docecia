@@ -1,51 +1,52 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import cakeImg from '../../../images/docecia.jpeg'
+import { firestore } from '../../../services/firebase'
 import styles from './styles.module.scss'
 
-interface CardProps {
+type CardProps = {
   cakeName: string
 }
 
 export function Card({ cakeName }: CardProps){
   const navigate = useNavigate()
 
-  const sizes = ['10', '12', '14', '16', '18']
-  const [selectedSize, setSelectedSize] = useState('10')
-  
-  function quantitySlices(size: string){
-    if(size === '10'){
-      return {
-        slices: 8,
-        price: '16,00'
-      }
+  const [sizes, setSizes] = useState<string[]>([])
+  const [selectedSize, setSelectedSize] = useState('')
+  const [price, setPrice] = useState()
+  const [slices, setSlices] = useState()
 
-    } else if(size === '12'){
-      return {
-        slices: 10,
-        price: '20,00'
+  useEffect(()=>{
+
+    var vetorAux:string[] = []
+
+    firestore.collection("cakes").doc(cakeName).collection("sizes").orderBy("price").get().then((querySnapshot)=>{
+      querySnapshot.forEach((sizeDoc) => {
+        vetorAux.push(sizeDoc.id)
+        
+      })
+
+      /**
+       * ? Porque estou utilizando o 'vetorAux' ao invés do 'sizes'? Pq o valor de sizes ainda está como undefined até que o useEffect seja terminado de executar, então vai setar os valores dos estados 'selectedSize', 'price' e 'slices' como undefined, já o 'vetorAux' possui os valores dos tamanhos vindo do firestore e consegue setar esses estados com os valores.
+       */
+      setSizes(vetorAux) // atribui valores ao array de estados 'sizes'
+      setSelectedSize(vetorAux[0]) // inicia o estado de selectedSize com o primeiro elemento do array 'vetorAux'
+      sizeData(vetorAux[0]) 
+
+    })
+
+  },[])
+
+  function sizeData(size: string){
+    firestore.collection("cakes").doc(cakeName).collection("sizes").doc(size).get().then((doc) => {
+      if(doc.exists){
+        const info = doc.data()!
+
+        setPrice(info.price)
+        setSlices(info.slices)
       }
-      
-    } else if(size === '14'){
-      return {
-        slices: 16,
-        price: '26,00'
-      }
-      
-    } else if(size === '16'){
-      return {
-        slices: 20,
-        price: '32,00'
-      }
-      
-    } else if(size === '18'){
-      return {
-        slices: 24,
-        price: '46,00'
-      }
-      
-    }
+    })
   }
 
   return (
@@ -61,29 +62,29 @@ export function Card({ cakeName }: CardProps){
           <p>Tamanhos</p>
 
           {sizes.map( size => (
-            <>
-              <input 
+            <label htmlFor={`${cakeName}_${size}`} key={`${cakeName}_${size}`}>
+              <input
                 type="radio" 
                 name={cakeName} 
                 value={size}
-                id={cakeName+size}
+                id={`${cakeName}_${size}`}
                 checked={selectedSize === size}
-                onChange={event => setSelectedSize(event.target.value)} 
+                onChange={event => {
+                  setSelectedSize(event.target.value)
+                  sizeData(event.target.value)
+                }}
               />
-              <label htmlFor={cakeName+size}>{size}</label>
-            </>
+              {size}
+            </label>
           ))}
-
-          {console.log(selectedSize)}
           
         </div>
-
-        <p>Serve até {quantitySlices(selectedSize)?.slices} fatias</p>
-        <p><span>R$</span> {quantitySlices(selectedSize)?.price}</p>
+        
+        <p>Serve até {slices} fatias</p>
+        <p><span>R$</span> {price}</p>
       </div>  
       
       <button onClick={() => navigate(`/${cakeName}/makecake`)}>Montar bolo</button>
-      {/* Corrigir esse caminho de navegação */}
     </div>
   )
 }
