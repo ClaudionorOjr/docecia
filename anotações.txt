@@ -1,0 +1,37 @@
+ANOTAÇÕES!
+
+- Formas de acessar os dados do Firebase:
+const [userDetails, setUserDetails] = useState<any>('')
+  
+firestore.collection('cakes').doc(
+  "QLEDKyIhI6MbiCMCuGHJ").get()
+      .then(snapshot => {
+        const data = snapshot.data()
+        if (data){
+          setUserDetails(data)
+        }
+
+      })
+
+// * get one documents in collection firestore
+firestore.collection('cakes').doc(
+  "QLEDKyIhI6MbiCMCuGHJ").get()
+      .then(snapshot => {
+        const data = snapshot.data()
+          setUserDetails(data)
+      })
+
+// * get all documents in collection firestore
+async function getMarker() {
+  const snapshot = await firestore.collection('cakes').get()
+  return snapshot.docs.map(doc => doc.data());
+}
+
+setTimeout(() => {
+firestore.collection('cakes').doc(
+"QLEDKyIhI6MbiCMCuGHJ").get()
+  .then(snapshot => {
+    const data = snapshot.data()
+      console.log(`${JSON.stringify(data)}`)
+  })
+}, 30*1000)

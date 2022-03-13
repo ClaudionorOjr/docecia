@@ -4,28 +4,43 @@ import { Card } from './Card'
 import { firestore } from '../../services/firebase'
 import { useEffect, useState } from 'react'
 
-export function Menu(){
-  const [cakes, setCakes] = useState<string[]>([])
-  
-  useEffect(()=>{
-    const vetorAux: string[] = []
-    firestore.collection("cakes").get().then(
-      (querySnapshot)=>{
-        querySnapshot.forEach((cakeDoc) =>{
-          vetorAux.push(cakeDoc.id) // O nome dos bolos está no id
-        })
+export type FirebaseCakesData = {
+  name: string
+  sizes: [
+    {
+      size: string
+      price: number
+      slices: number
+    }
+  ]
+}
 
-        setCakes(vetorAux)
+export function Menu(){
+
+  const [cakes, setCakes] = useState<FirebaseCakesData[]>()
+  
+  useEffect(() => {
+    async function retrievedFirebaseData() {
+      const cakeCollection = await firestore.collection('cakes').get()
+      const docsData = cakeCollection.docs.map((doc) => {
+        return doc.data() as FirebaseCakesData
       })
+
+      setCakes(docsData)
+    }
+
+    retrievedFirebaseData()
 
   },[])
 
   return (
     <div className={styles.menuContainer} id="menu">
       <h2> Escolha do bolo </h2>
-      {cakes.map(cake => (
-        <Card key={cake} cakeName={cake} />
+
+      {cakes?.map((cake) => (
+        <Card key={cakes.indexOf(cake)} cakeData={cake}/>
       ))}
+      
     </div>
   )
 }

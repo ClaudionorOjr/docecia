@@ -1,8 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import amanteigado from '../../images/cake_amanteigado.png'
-import chocolate from '../../images/cake_chocolate.png'
+
 import styles from './styles.module.scss'
 
 export function MakeCake(){
@@ -24,8 +23,33 @@ export function MakeCake(){
     })}>
       <input 
         {...register('name')}
-        type="text"
+        type="radio"
+        name='recheio'
+        id='ninho'
       />
+      <label htmlFor="ninho">Ninho</label>
+
+      <input 
+        {...register('name')}
+        type="radio"
+        name='recheio'
+        id='chocolate'
+      />
+      <label htmlFor="chocolate">Chocolate</label>
+
+      <input 
+        {...register('name')}
+        type="radio"
+        name='recheio'
+        id='chocolate'
+      />
+      <label htmlFor="chocolate">Chocolate</label>
+
+      <br />
+
+      <textarea cols={40} rows={10}/>
+
+      <br />
       <button type="submit">Confirmar</button>
     </form>
   )
