@@ -6,8 +6,8 @@ import styles from './styles.module.scss'
 
 export function MakeCake(){
   const validator = yup.object().shape({
-    name: yup.boolean()
-        .required(),
+    recheio: yup.array(yup.string()).required().max(2, "Limit of 2 fillings"),
+    massa: yup.string().required()
   });
 
   const { 
@@ -18,38 +18,73 @@ export function MakeCake(){
     resolver: yupResolver(validator)
   })
 
+  function onSubmitButton(data: any){
+    console.log(data)
+  }
+
   return (
-    <form onSubmit={handleSubmit((data: any) => {      
-    })}>
-      <input 
-        {...register('name')}
-        type="radio"
-        name='recheio'
-        id='ninho'
-      />
-      <label htmlFor="ninho">Ninho</label>
+    <form onSubmit={handleSubmit(onSubmitButton)}>
 
-      <input 
-        {...register('name')}
-        type="radio"
-        name='recheio'
-        id='chocolate'
-      />
-      <label htmlFor="chocolate">Chocolate</label>
+      <div className='massas'>
+        <input 
+          {...register('massa')}
+          type="radio"
+          name="massa"
+          value="branca amanteigada"
+          id='branca amanteigada'
+        />
+        <label htmlFor="branca amanteigada">branca amanteigada</label>
 
-      <input 
-        {...register('name')}
-        type="radio"
-        name='recheio'
-        id='chocolate'
-      />
-      <label htmlFor="chocolate">Chocolate</label>
+        <input 
+          {...register('massa')}
+          type="radio"
+          value="chocolate"
+          id='chocolate-massa'
+        />
+        <label htmlFor="chocolate-massa">chocolate</label>
+      </div>
 
       <br />
 
-      <textarea cols={40} rows={10}/>
+      <div className="recheios">
+        <input 
+          type='checkbox'
+          value='ninho'
+          id='ninho'
+          {...register("recheio")}
+        />
+        <label htmlFor="ninho">Ninho</label>
+
+        <input 
+          type='checkbox'
+          value='chocolate'
+          id='chocolate'
+          {...register("recheio")}
+        />
+        <label htmlFor="chocolate">Chocolate</label>
+
+        <input 
+          type='checkbox'
+          value='crocante'
+          id='crocante'
+          {...register("recheio")}
+        />
+        <label htmlFor="crocante">Crocante</label>
+
+        <input 
+          type='checkbox'
+          value='duo'
+          id='duo'
+          {...register("recheio")}
+        />
+        <label htmlFor="duo">Duo</label>
+
+        <br/>
+        {errors.recheio && <span>{errors.recheio.message}</span>}
+      </div>
 
       <br />
+
       <button type="submit">Confirmar</button>
     </form>
   )
