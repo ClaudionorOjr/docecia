@@ -1,91 +1,90 @@
-.cakeBatters {
+.formSection {
   display: flex;
+  flex-direction: column;
 
-  justify-content: space-evenly;
-
-  .batter {
-    width: 150px;
-    height: 150px;
-    border-radius: 5px;
-    // border-style: outset;
-    border: 5px outset;
-    background: #c4c4c4;
-  
-    img, p {
-      display: block;
-      width: fit-content;
-      margin: 15px auto 5px;
-    }
-
-    // &:hover {
-    //   border-style: inset ;
-    // }
-
-    input[type='checkbox'] {
-      display: none;
-    }
-
+  span {
+    margin-left: 1rem;
   }
 
+  textarea {
+    margin: 1rem;
+    border-radius: .6rem;
+    max-width: 25rem;
+  }
 }
 
-.fillings {
+.sectionTitle {
+  margin: 1rem;
+}
+
+.batterSection {
   display: flex;
   flex-wrap: wrap;
-  width: 300px;
+  align-items: center;
+  justify-content: space-evenly;
+}
 
-  margin: auto;
+.fillingSection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 
   label {
-    width: 150px;
-    background-color: #b6b6b6;
+    min-width: 8rem;
+    margin: 0 1rem;
+  }
+}
+
+.cakeBatterOption {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 13rem;
+  margin: 1rem;
+}
+
+.cakeFillingOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.inputOption {
+  label {
+    color: #000;
+    display: inline-block;
+    background: #e8e8e8;
+    width: 100%;
+    padding: .8rem 1rem;
+    border: 2px solid #d9d9d9;
+    border-radius: .6rem;
+    margin-bottom: .5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    text-align: center;
     text-transform: capitalize;
   }
-}
 
-.gridContainer {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 0.25fr, 1fr, 0.25fr;
-  grid-template-areas: 
-  "title-additional title-observation" 
-  "additional observation"
-  ". button";
-}
-
-.additional {
-  grid-area: additional;
-  
-  & > label {
-    margin-left: 50px;
+  input {
+    display: inline-block;
+    visibility: hidden;
+    position: absolute;
   }
 
-  .additionalBox {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-
-    width: 100px;
-    height: 100px;
-
-    margin: 10px 50px;
-
-    border-radius: 5px;
-
-    background: #c4c4c4;
-
+  input:checked + label {
+    border-color: blue;
   }
 }
 
-.observation {
-  grid-area: observation;
+.buttonContainer {
+  display: flex;
+  align-items: center;
 
-  div{
-    margin-left: 50px
+  button {
+    margin-left: 1rem;
+    border-radius: .6rem;
+    padding: .75rem 1rem;
   }
-}
-
-.buttonAddBag {
-  grid-area: button;
 }

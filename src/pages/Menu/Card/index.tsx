@@ -37,17 +37,18 @@ export function Card({ cakeData }: CardProps){
           {sizeOptions.map ((option) =>(
             <label htmlFor={`${cakeData.name}_${option.size}`} key={sizeOptions.indexOf(option)}>
               <input 
-              type="radio" name={cakeData.name} 
-              id={`${cakeData.name}_${option.size}`}
-              checked={selectedSize === option.size}
-              onChange={() => {
-                setSelectedSize(option.size)
-                setPrice(option.price)
-                setSlices(option.slices)
-              }}
-            />
-              {option.size}
-            </label>
+                type="radio" 
+                name={cakeData.name}
+                id={`${cakeData.name}_${option.size}`}
+                checked={selectedSize === option.size}
+                onChange={() => {
+                  setSelectedSize(option.size)
+                  setPrice(option.price)
+                  setSlices(option.slices)
+                }}
+              />
+                {option.size}
+              </label>
           ))}                   
         </div>
         

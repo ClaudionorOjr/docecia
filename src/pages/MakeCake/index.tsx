@@ -1,91 +1,112 @@
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
+import { mockData } from '../../mock';
+
+import chocolateCakeImage from '../../images/cake_chocolate.png';
+import amanteigadoCakeImage from '../../images/cake_amanteigado.png';
 
 import styles from './styles.module.scss'
 
+const cakeImages: any = {
+  brancaAmanteigada: amanteigadoCakeImage,
+  chocolate: chocolateCakeImage,
+} 
+
 export function MakeCake(){
   const validator = yup.object().shape({
-    recheio: yup.array(yup.string()).required().max(2, "Limit of 2 fillings"),
-    massa: yup.string().required()
+    filling: yup.array(yup.string())
+      .required("Escolha até 2 recheio")
+      .min(1, "Escolha pelo menos 1 recheio")
+      .max(2, "Limitado a 2 recheios"),
+    batter: yup.string()
+      .required("Escolha um tipo de massa"),
+    observation: yup.string()
   });
 
   const { 
     register, 
     handleSubmit,
-    formState: { errors } 
+    formState: { errors },
+    setValue,
+    reset
   } = useForm({
     resolver: yupResolver(validator)
   })
 
+  useEffect(() => {
+    setValue('batter', '');
+    setValue('filling', undefined);
+}, []);
+
   function onSubmitButton(data: any){
     console.log(data)
+    reset()
   }
+
 
   return (
     <form onSubmit={handleSubmit(onSubmitButton)}>
 
-      <div className='massas'>
-        <input 
-          {...register('massa')}
-          type="radio"
-          name="massa"
-          value="branca amanteigada"
-          id='branca amanteigada'
-        />
-        <label htmlFor="branca amanteigada">branca amanteigada</label>
-
-        <input 
-          {...register('massa')}
-          type="radio"
-          value="chocolate"
-          id='chocolate-massa'
-        />
-        <label htmlFor="chocolate-massa">chocolate</label>
+      <h1 className={styles.sectionTitle}>Massas</h1>
+      <div className={styles.formSection}>
+        <div className={styles.batterSection}>
+          {
+            mockData.massas.map((batter) => (
+              <div 
+                key={`${batter.name}`}
+                className={`${styles.cakeBatterOption} ${styles.inputOption}`}
+              >
+                <img src={cakeImages[batter.key]} alt={`${batter.name}`} />
+                <input 
+                  {...register('batter')}
+                  type="radio"
+                  value={batter.name}
+                  id={`batter-${batter.id}`}
+                />
+                <label htmlFor={`batter-${batter.id}`}>{batter.name}</label>
+              </div>
+            ))
+          }
+        </div>
+        {errors.batter && <span className='errorMessage'>{errors.batter.message}</span>}
       </div>
 
-      <br />
-
-      <div className="recheios">
-        <input 
-          type='checkbox'
-          value='ninho'
-          id='ninho'
-          {...register("recheio")}
-        />
-        <label htmlFor="ninho">Ninho</label>
-
-        <input 
-          type='checkbox'
-          value='chocolate'
-          id='chocolate'
-          {...register("recheio")}
-        />
-        <label htmlFor="chocolate">Chocolate</label>
-
-        <input 
-          type='checkbox'
-          value='crocante'
-          id='crocante'
-          {...register("recheio")}
-        />
-        <label htmlFor="crocante">Crocante</label>
-
-        <input 
-          type='checkbox'
-          value='duo'
-          id='duo'
-          {...register("recheio")}
-        />
-        <label htmlFor="duo">Duo</label>
-
-        <br/>
-        {errors.recheio && <span>{errors.recheio.message}</span>}
+      <h1 className={styles.sectionTitle}>Recheios</h1>
+      <div className={styles.formSection}>
+        <div className={styles.fillingSection}>
+          {
+              mockData.recheios.map((filling) => (
+                <div 
+                  key={`${filling.id}`}
+                  className={`${styles.cakeFillingOption} ${styles.inputOption}`}
+                >
+                  <input 
+                    {...register('filling')}
+                    type="checkbox"
+                    value={filling.name}
+                    id={`filling-${filling.id}`}
+                  />
+                  <label htmlFor={`filling-${filling.id}`}>{filling.name}</label>
+                </div>
+              ))
+            }
+        </div>
+        {errors.filling && <span className="errorMessage">{errors.filling.message}</span>}
       </div>
 
-      <br />
-
-      <button type="submit">Confirmar</button>
+      <h1 className={styles.sectionTitle}>Observações</h1>
+      <div className={styles.formSection}>
+        <textarea
+          {...register('observation')}
+          placeholder='Insira uma observação'
+        />
+      </div>
+      
+      <div className={styles.buttonContainer}>
+        <button type="submit">Confirmar</button>
+      </div>
     </form>
   )
 }
