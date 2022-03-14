@@ -1,56 +1,112 @@
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
+import { mockData } from '../../mock';
+
+import chocolateCakeImage from '../../images/cake_chocolate.png';
+import amanteigadoCakeImage from '../../images/cake_amanteigado.png';
 
 import styles from './styles.module.scss'
 
+const cakeImages: any = {
+  brancaAmanteigada: amanteigadoCakeImage,
+  chocolate: chocolateCakeImage,
+} 
+
 export function MakeCake(){
   const validator = yup.object().shape({
-    name: yup.boolean()
-        .required(),
+    filling: yup.array(yup.string())
+      .required("Escolha até 2 recheio")
+      .min(1, "Escolha pelo menos 1 recheio")
+      .max(2, "Limitado a 2 recheios"),
+    batter: yup.string()
+      .required("Escolha um tipo de massa"),
+    observation: yup.string()
   });
 
   const { 
     register, 
     handleSubmit,
-    formState: { errors } 
+    formState: { errors },
+    setValue,
+    reset
   } = useForm({
     resolver: yupResolver(validator)
   })
 
+  useEffect(() => {
+    setValue('batter', '');
+    setValue('filling', undefined);
+}, []);
+
+  function onSubmitButton(data: any){
+    console.log(data)
+    reset()
+  }
+
+
   return (
-    <form onSubmit={handleSubmit((data: any) => {      
-    })}>
-      <input 
-        {...register('name')}
-        type="radio"
-        name='recheio'
-        id='ninho'
-      />
-      <label htmlFor="ninho">Ninho</label>
+    <form onSubmit={handleSubmit(onSubmitButton)}>
 
-      <input 
-        {...register('name')}
-        type="radio"
-        name='recheio'
-        id='chocolate'
-      />
-      <label htmlFor="chocolate">Chocolate</label>
+      <h1 className={styles.sectionTitle}>Massas</h1>
+      <div className={styles.formSection}>
+        <div className={styles.batterSection}>
+          {
+            mockData.massas.map((batter) => (
+              <div 
+                key={`${batter.name}`}
+                className={`${styles.cakeBatterOption} ${styles.inputOption}`}
+              >
+                <img src={cakeImages[batter.key]} alt={`${batter.name}`} />
+                <input 
+                  {...register('batter')}
+                  type="radio"
+                  value={batter.name}
+                  id={`batter-${batter.id}`}
+                />
+                <label htmlFor={`batter-${batter.id}`}>{batter.name}</label>
+              </div>
+            ))
+          }
+        </div>
+        {errors.batter && <span className='errorMessage'>{errors.batter.message}</span>}
+      </div>
 
-      <input 
-        {...register('name')}
-        type="radio"
-        name='recheio'
-        id='chocolate'
-      />
-      <label htmlFor="chocolate">Chocolate</label>
+      <h1 className={styles.sectionTitle}>Recheios</h1>
+      <div className={styles.formSection}>
+        <div className={styles.fillingSection}>
+          {
+              mockData.recheios.map((filling) => (
+                <div 
+                  key={`${filling.id}`}
+                  className={`${styles.cakeFillingOption} ${styles.inputOption}`}
+                >
+                  <input 
+                    {...register('filling')}
+                    type="checkbox"
+                    value={filling.name}
+                    id={`filling-${filling.id}`}
+                  />
+                  <label htmlFor={`filling-${filling.id}`}>{filling.name}</label>
+                </div>
+              ))
+            }
+        </div>
+        {errors.filling && <span className="errorMessage">{errors.filling.message}</span>}
+      </div>
 
-      <br />
-
-      <textarea cols={40} rows={10}/>
-
-      <br />
-      <button type="submit">Confirmar</button>
+      <h1 className={styles.sectionTitle}>Observações</h1>
+      <div className={styles.formSection}>
+        <textarea
+          {...register('observation')}
+          placeholder='Insira uma observação'
+        />
+      </div>
+      
+      <div className={styles.buttonContainer}>
+        <button type="submit">Confirmar</button>
+      </div>
     </form>
   )
 }
