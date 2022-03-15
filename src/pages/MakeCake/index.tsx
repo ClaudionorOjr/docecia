@@ -1,8 +1,14 @@
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+
+import { useAuth } from '../../hooks/useAuth';
+import { firestore } from '../../services/firebase';
+import { CakeInfoContext } from '../../routes';
+
 import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { mockData } from '../../mock';
+
 
 import chocolateCakeImage from '../../images/cake_chocolate.png';
 import amanteigadoCakeImage from '../../images/cake_amanteigado.png';
@@ -15,6 +21,9 @@ const cakeImages: any = {
 } 
 
 export function MakeCake(){
+  const { testData } = useContext(CakeInfoContext)
+  const { user } = useAuth()
+
   const validator = yup.object().shape({
     filling: yup.array(yup.string())
       .required("Escolha até 2 recheio")
@@ -42,9 +51,24 @@ export function MakeCake(){
 
   function onSubmitButton(data: any){
     console.log(data)
+    firestore.collection("order").add({
+      client: {
+        id: user?.id,
+        name: user?.name
+      },
+      cake: {
+        name: testData?.name,
+        size: testData?.size,
+        price: testData?.price,
+        batter: data.batter,
+        fillings: data.filling,
+        note: data.observation
+      }
+    }).then((orderRef)=> {
+      console.log("Document written with ID: ", orderRef.id)
+    })
     reset()
   }
-
 
   return (
     <form onSubmit={handleSubmit(onSubmitButton)}>
@@ -107,6 +131,10 @@ export function MakeCake(){
       <div className={styles.buttonContainer}>
         <button type="submit">Confirmar</button>
       </div>
+
+      <p>{testData?.name}</p>
+      <p>{testData?.price}</p>
+      <p>{testData?.size}</p>
     </form>
   )
 }
