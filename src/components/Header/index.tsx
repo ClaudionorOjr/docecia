@@ -1,4 +1,4 @@
-import { Link } from 'react-scroll'
+import { Link } from 'react-router-dom'
 import { SignInButton } from '../SignInButton'
 import styles from './styles.module.scss'
 
@@ -8,20 +8,16 @@ export function Header(){
       <div className={styles.headerContent}>
         <nav>
           <Link 
-            to="home" 
-            smooth={true} 
-            duration={500}
+            to="/"
             className={styles.active}
           >
             Início 
           </Link>
 
           <Link 
-            to="menu" 
-            smooth={true} 
-            duration={500}
+            to="/bag"
           > 
-            Menu
+            Sacola
           </Link>
 
         </nav>
