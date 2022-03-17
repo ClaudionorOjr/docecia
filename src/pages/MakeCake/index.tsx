@@ -1,8 +1,9 @@
 import { useContext, useEffect } from 'react';
 
-import { useAuth } from '../../hooks/useAuth';
 import { firestore } from '../../services/firebase';
+import { useAuth } from '../../hooks/useAuth';
 import { CakeInfoContext } from '../../routes';
+import { useNavigate } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -21,6 +22,7 @@ const cakeImages: any = {
 } 
 
 export function MakeCake(){
+  const navigate = useNavigate()
   const { testData } = useContext(CakeInfoContext)
   const { user } = useAuth()
 
@@ -47,7 +49,7 @@ export function MakeCake(){
   useEffect(() => {
     setValue('batter', '');
     setValue('filling', undefined);
-}, []);
+  }, []);
 
   function onSubmitButton(data: any){
     console.log(data)
@@ -68,6 +70,7 @@ export function MakeCake(){
       console.log("Document written with ID: ", orderRef.id)
     })
     reset()
+    navigate('/bag')
   }
 
   return (
@@ -129,7 +132,7 @@ export function MakeCake(){
       </div>
       
       <div className={styles.buttonContainer}>
-        <button type="submit">Confirmar</button>
+        <button type="submit">Adicionar a sacola</button>
       </div>
 
       <p>{testData?.name}</p>
