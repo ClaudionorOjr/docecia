@@ -10,6 +10,7 @@ import { useAuth } from '../../hooks/useAuth'
 import cakeImg from '../../images/docecia.jpeg'
 import { GoTrashcan } from 'react-icons/go'
 import styles from './styles.module.scss'
+import { formatDateString } from '../../helpers'
 
 export function Bag(){
   const {user} = useAuth()
@@ -98,7 +99,7 @@ export function Bag(){
     : (
       `_*Rua:*_ ${data?.street}  _*Nº:*_ ${data?.streetNumber}`
       )}
-    _*Data:*_ ${data?.date}  _*Hora:*_ ${data?.time} ⏰
+    _*Data:*_ ${formatDateString(data?.date)}  _*Hora:*_ ${data?.time} ⏰
     
     *Forma de pagament:*
     ${data?.payment}
@@ -157,17 +158,20 @@ export function Bag(){
             Rua <input 
                   {...register("street")}
                   type="text"
+                  required={!pickupLocal}
                   disabled={pickupLocal}
                 />
                 {errors.street && <span>{errors.street.message}</span>}
             Nº <input 
                 {...register("streetNumber")}
                 type="number"
+                required={!pickupLocal}
                 disabled={pickupLocal}
               />
-            <label htmlFor="">
+            <label htmlFor="pickup-local">
               <input 
                 {...register("pickupLocal")}
+                id="pickup-local"
                 type="checkbox"
                 checked={pickupLocal}
                 onChange={(event) => {
