@@ -1,0 +1,66 @@
+.orderContainer {
+
+}
+
+.orderCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  width: 360px;
+  height: 120px;
+  margin: 10px;
+  border-radius: 5px;
+
+  background: #d4d4d4;
+  color: #000;
+  
+  img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .orderInfo {
+    width: 210px;
+    margin: 5px 0;
+  }
+
+  .orderPrice {
+    display: flex;
+    justify-content: space-between;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      
+      color: #737380;
+      transition: color .5s;
+
+      &:hover {
+        cursor: pointer;
+        color: rgba(#ff0000, .8);
+     }
+    }
+  }
+}
+
+.form {
+  input {
+    margin-right: 10px;
+  }
+
+  input[type='radio']{
+    margin-left: 10px;
+  }
+
+  input[type="number"]{
+    width: 60px;
+    text-align: center;
+  }
+}
+
+.address {
+  label {
+    display: block;
+  }
+}

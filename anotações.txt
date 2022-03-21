@@ -35,3 +35,21 @@ firestore.collection('cakes').doc(
       console.log(`${JSON.stringify(data)}`)
   })
 }, 30*1000)
+
+- Formas de usar o yup e react hook forms:
+
+const validator = yup.object().shape({
+    street: yup.string().required()
+})
+  
+const { register, handleSubmit, formState: { errors }} = useForm({
+  resolver: yupResolver(validator)
+})
+
+// ou
+
+const resolver = yupResolver(validator)
+const { register, handleSubmit, formState: { errors }} = useForm(resolver)
+
+- yup
+street: pickupLocal ? (yup.string()) : (yup.string().required("Tá errado aqui")),
