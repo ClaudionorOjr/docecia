@@ -1,6 +1,8 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
 import { auth, firebase } from "../services/firebase"
 
+import userImg from '../images/Avatar.svg';
+
 type User = {
   id: string
   name: string
@@ -26,7 +28,7 @@ export function AuthContextProvider({children}: AuthContextProviderProps){
     const unsubscribe = auth.onAuthStateChanged(user => {
       if(user){
         const { displayName, photoURL, uid } = user
-
+        
         if(!displayName || !photoURL){
           throw new Error('Missing information from Google Account.')
         }
@@ -34,7 +36,7 @@ export function AuthContextProvider({children}: AuthContextProviderProps){
         setUser({
           id: uid,
           name: displayName,
-          avatar: photoURL
+          avatar: photoURL ? photoURL : userImg
         })
       }  
     })
@@ -59,7 +61,7 @@ export function AuthContextProvider({children}: AuthContextProviderProps){
       setUser({
         id: uid,
         name: displayName,
-        avatar: photoURL
+        avatar: photoURL ? photoURL : userImg
       })
     }
   }

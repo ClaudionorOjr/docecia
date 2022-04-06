@@ -23,7 +23,7 @@ const cakeImages: any = {
 
 export function MakeCake(){
   const navigate = useNavigate()
-  const { testData } = useContext(CakeInfoContext)
+  const { cakeInfo } = useContext(CakeInfoContext)
   const { user } = useAuth()
 
   const validator = yup.object().shape({
@@ -59,9 +59,9 @@ export function MakeCake(){
         name: user?.name
       },
       cake: {
-        name: testData?.name,
-        size: testData?.size,
-        price: testData?.price,
+        name: cakeInfo?.name,
+        size: cakeInfo?.size,
+        price: cakeInfo?.price,
         batter: data.batter,
         fillings: data.filling,
         note: data.observation
@@ -135,9 +135,9 @@ export function MakeCake(){
         <button type="submit">Adicionar a sacola</button>
       </div>
 
-      <p>{testData?.name}</p>
-      <p>{testData?.price}</p>
-      <p>{testData?.size}</p>
+      <p>{cakeInfo?.name}</p>
+      <p>{cakeInfo?.price}</p>
+      <p>{cakeInfo?.size}</p>
     </form>
   )
 }

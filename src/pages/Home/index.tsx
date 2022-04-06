@@ -1,17 +1,19 @@
 import { NavBar } from './NavBar'
+import { Menu } from '../Menu'
 
 import bgImg from '../../images/docecia_bg.jpeg'
-import logoImg from '../../images/docecia.jpeg'
+import logoImg from '../../images/docecia_logo.jpeg'
+import cakeImg from '../../images/docecia.jpeg';
 import whatsappImg from '../../images/whatsapp_64.png'
+
 import styles from './styles.module.scss'
-import { Menu } from '../Menu'
 
 export function Home(){
   return (
     <>
       <div className={styles.homeContainer} id="home">
         
-        <img src={bgImg} alt="" className={styles.backgroundImg}/>
+        <img src={cakeImg} alt="" className={styles.backgroundImg}/>
 
         {/* <NavBar /> */}
 
@@ -22,10 +24,11 @@ export function Home(){
           </p>
         </section>
 
-        <button>
+        <a href="https://api.whatsapp.com/send?phone=5584981385287" target="_blank">
           <img src={whatsappImg} alt="Whatsapp button" />
-        </button>
+        </a>
       </div>
+      
       <Menu />
     </>
   )

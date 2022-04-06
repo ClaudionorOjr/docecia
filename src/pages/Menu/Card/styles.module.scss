@@ -4,15 +4,21 @@
   margin: 2rem auto;
 
   border-radius: 5px;
-  background: var(--gray-300);
+  background: linear-gradient(145deg, #dad2ab, #fff9cb);
+  box-shadow: -9px 9px 49px #bfb896,
+              9px -9px 49px #ffffe6;
 
   img {
     margin: 1rem;
     width: 220px;
   }
 
-  .cakeInfo {
+  .cakeContent {
     margin: 1rem;
+
+    p {
+      margin-top: 10px;
+    }
 
     .title {
       font-size: 28px;
@@ -20,12 +26,53 @@
       text-transform: capitalize;
     }
 
+    .stylePrice {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
     .cakeSize {
-        label {
-          margin-right: 1rem ;
-          font-size: 20px;
+      p {
+        position: relative;
+        margin-bottom: 10px;
+        z-index: 1; //* Provavelmente retirar
+      }
+
+      div{
+        display: inline-flex;
+      }
+
+      input[type=radio] {
+        display: none;
+        
+        &:checked + label, & + label:hover {
+          background: var(--pink-900);
+          color: var(--white);
         }
+      }
+        
+      label {
+        display: flex;
+        min-width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        
+        justify-content: center;
+        align-items: center;
       
+        border-radius: 50%;
+        background: linear-gradient(315deg, #fff9cb, #dad2ab);
+        box-shadow: -6px 6px 30px #c6bf9c,
+                    6px -6px 30px #ffffe0;
+        
+        transition: background .5s;
+        font-size: 20px;
+        text-transform: uppercase;
+        color: var(--brown-900);
+        
+        cursor: pointer;
+        z-index: 0; //* Provavelmente retirar
+      }
     }
   }
 
@@ -33,7 +80,17 @@
     padding: 0.5rem 1rem;
     margin: 25% auto 5%;
     
+    font-weight: bold;
+    font-size: 18px;
+
     border-radius: 5px;
-    border: 1px solid #000;
+    background: var(--pink-900);
+    color: var(--white);
+
+    transition: filter .5s;
+
+    &:hover {
+      filter: brightness(0.9);
+    }
   }
 }

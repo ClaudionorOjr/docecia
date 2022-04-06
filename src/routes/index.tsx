@@ -1,5 +1,7 @@
 import { createContext, SetStateAction, useState } from "react";
+
 import { Routes, Route } from "react-router-dom";
+
 import { Home } from "../pages/Home"
 import { MakeCake } from "../pages/MakeCake"
 import { Bag } from "../pages/Bag"
@@ -12,17 +14,17 @@ type CakeInfoType = {
 }
 
 type CakeInfoContextType = {
-  testData: CakeInfoType | undefined
-  setTestData: React.Dispatch<SetStateAction<CakeInfoType | undefined>>
+  cakeInfo: CakeInfoType | undefined
+  setCakeInfo: React.Dispatch<SetStateAction<CakeInfoType | undefined>>
 }
 
 export const CakeInfoContext = createContext({} as CakeInfoContextType)
 
 export function AppRoutes(){
-  const [testData, setTestData] = useState<CakeInfoType>()
+  const [cakeInfo, setCakeInfo] = useState<CakeInfoType>()
 
   return (
-    <CakeInfoContext.Provider value={{testData, setTestData}}>
+    <CakeInfoContext.Provider value={{cakeInfo, setCakeInfo}}>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />}/>

@@ -1,6 +1,6 @@
 import { useAuth } from '../../hooks/useAuth'
 
-import { FiX } from 'react-icons/fi'
+import { FiX, FiLogIn } from 'react-icons/fi'
 import styles from './styles.module.scss'
 
 export function SignInButton() {
@@ -13,7 +13,7 @@ export function SignInButton() {
     >
       <img src={user.avatar} alt="profile" />
       {user.name}
-      <FiX color="#737380" className={styles.closeIcon} />
+      <FiX className={styles.closeIcon} />
     </button>
   ) : (
     <button
@@ -21,6 +21,7 @@ export function SignInButton() {
       onClick={signInWithGoogle}
     >
       Entrar
+      <FiLogIn className={styles.entryIcon}/>
     </button>
   ) 
 }
