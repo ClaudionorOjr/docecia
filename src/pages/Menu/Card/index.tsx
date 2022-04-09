@@ -5,8 +5,9 @@ import { FirebaseCakesData } from '..'
 import { useAuth } from '../../../hooks/useAuth'
 import { CakeInfoContext } from '../../../routes'
 
-import cakeImg from '../../../images/docecia.jpeg'
+import { priceFormat } from '../../../helpers/priceFormat'
 
+import cakeImg from '../../../images/docecia.jpeg'
 import styles from './styles.module.scss'
 
 type CardProps = {
@@ -37,6 +38,7 @@ export function Card({ cakeData }: CardProps){
     }
 
     setCakeInfo({
+      imageURL: cakeData.imageURL,
       name: cakeData.name,
       size: selectedSize,
       price: price
@@ -45,16 +47,9 @@ export function Card({ cakeData }: CardProps){
     navigate(`/makecake`)
   }
 
-  function priceFormat(price: number){
-    return new Intl.NumberFormat('pt-BR', {
-      style: "currency",
-      currency: 'BRL',
-    }).format(price)
-  }
-
   return (
     <div className={styles.cakeCard}>
-      <img src={cakeImg} alt="cake" />
+      <img src={cakeData.imageURL} alt="cake" />
       
       <div className={styles.cakeContent}>
         <p className={styles.title}>

@@ -6,8 +6,10 @@ import { Home } from "../pages/Home"
 import { MakeCake } from "../pages/MakeCake"
 import { Bag } from "../pages/Bag"
 import Layout from "./Layout";
+import { Header } from "../components/Header";
 
 type CakeInfoType = {
+  imageURL: string
   name: string
   size: string
   price: number

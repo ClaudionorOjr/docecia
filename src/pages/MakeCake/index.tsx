@@ -14,12 +14,21 @@ import { mockData } from '../../mock';
 import chocolateCakeImage from '../../images/cake_chocolate.png';
 import amanteigadoCakeImage from '../../images/cake_amanteigado.png';
 
+import { SiCakephp } from 'react-icons/si'
+import { GiCakeSlice } from 'react-icons/gi'
 import styles from './styles.module.scss'
 
 const cakeImages: any = {
   brancaAmanteigada: amanteigadoCakeImage,
   chocolate: chocolateCakeImage,
-} 
+}
+
+//! Alterei aqui e useEffect e nos campos dos formulários
+type MakeCakeType = {
+  batter: string,
+  fillings: string,
+  note: string
+}
 
 export function MakeCake(){
   const navigate = useNavigate()
@@ -27,13 +36,14 @@ export function MakeCake(){
   const { user } = useAuth()
 
   const validator = yup.object().shape({
-    filling: yup.array(yup.string())
+    fillings: yup.array(yup.string())
       .required("Escolha até 2 recheio")
       .min(1, "Escolha pelo menos 1 recheio")
-      .max(2, "Limitado a 2 recheios"),
+      .max(2, "Limitado a 2 recheios")
+      .nullable(),
     batter: yup.string()
       .required("Escolha um tipo de massa"),
-    observation: yup.string()
+    note: yup.string()
   });
 
   const { 
@@ -42,29 +52,30 @@ export function MakeCake(){
     formState: { errors },
     setValue,
     reset
-  } = useForm({
+  } = useForm<MakeCakeType>({
     resolver: yupResolver(validator)
   })
 
   useEffect(() => {
     setValue('batter', '');
-    setValue('filling', undefined);
+    setValue('fillings', '');
   }, []);
 
-  function onSubmitButton(data: any){
-    console.log(data)
+  function onSubmitButton(makeCakeData: MakeCakeType){
+    console.log(makeCakeData)
     firestore.collection("order").add({
       client: {
         id: user?.id,
         name: user?.name
       },
       cake: {
+        imageURL: cakeInfo?.imageURL,
         name: cakeInfo?.name,
         size: cakeInfo?.size,
         price: cakeInfo?.price,
-        batter: data.batter,
-        fillings: data.filling,
-        note: data.observation
+        batter: makeCakeData.batter,
+        fillings: makeCakeData.fillings,
+        note: makeCakeData.note
       }
     }).then((orderRef)=> {
       console.log("Document written with ID: ", orderRef.id)
@@ -74,9 +85,12 @@ export function MakeCake(){
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmitButton)}>
+    <form onSubmit={handleSubmit(onSubmitButton)} className={styles.formContainer}>
 
-      <h1 className={styles.sectionTitle}>Massas</h1>
+      <h1 className={styles.sectionTitle}>
+        <SiCakephp />
+        Massas
+      </h1>
       <div className={styles.formSection}>
         <div className={styles.batterSection}>
           {
@@ -100,39 +114,43 @@ export function MakeCake(){
         {errors.batter && <span className='errorMessage'>{errors.batter.message}</span>}
       </div>
 
-      <h1 className={styles.sectionTitle}>Recheios</h1>
+      <h1 className={styles.sectionTitle}>
+        <GiCakeSlice />
+        Recheios
+      </h1>
       <div className={styles.formSection}>
         <div className={styles.fillingSection}>
           {
-              mockData.recheios.map((filling) => (
+              mockData.recheios.map((fillings) => (
                 <div 
-                  key={`${filling.id}`}
+                  key={`${fillings.id}`}
                   className={`${styles.cakeFillingOption} ${styles.inputOption}`}
                 >
                   <input 
-                    {...register('filling')}
+                    {...register('fillings')}
                     type="checkbox"
-                    value={filling.name}
-                    id={`filling-${filling.id}`}
+                    value={fillings.name}
+                    id={`filling-${fillings.id}`}
                   />
-                  <label htmlFor={`filling-${filling.id}`}>{filling.name}</label>
+                  <label htmlFor={`filling-${fillings.id}`}>{fillings.name}</label>
                 </div>
               ))
             }
         </div>
-        {errors.filling && <span className="errorMessage">{errors.filling.message}</span>}
+        {errors.fillings && <span className="errorMessage">{errors.fillings.message}</span>}
       </div>
 
       <h1 className={styles.sectionTitle}>Observações</h1>
       <div className={styles.formSection}>
+        <p>Utilize do campo abaixo para comunicar alguma observação sobre o pedido.</p>
         <textarea
-          {...register('observation')}
+          {...register('note')}
           placeholder='Insira uma observação'
         />
       </div>
       
       <div className={styles.buttonContainer}>
-        <button type="submit">Adicionar a sacola</button>
+        <button type="submit">Adicionar à sacola</button>
       </div>
 
       <p>{cakeInfo?.name}</p>

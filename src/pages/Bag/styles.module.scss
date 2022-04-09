@@ -1,5 +1,8 @@
 .orderContainer {
+  padding: .5rem 0 2rem;
+  border-bottom: 2px solid var(--brown-900);
 
+  padding-left: 15px;
 }
 
 .orderCard {
@@ -12,14 +15,30 @@
   margin: 10px;
   border-radius: 5px;
 
-  background: #d4d4d4;
-  color: #000;
+  background: linear-gradient(315deg, #dad2ab, #fff9cb);
+  box-shadow: 10px 15px 20px #bfb896, 
+              18px 20px 20px #ffffe6;
   
   img {
     width: 100px;
     height: 100px;
   }
 
+  div {
+    h3, span {
+      text-transform: capitalize;
+    }
+
+    span {
+      display: inline-block;
+      width: 32px;
+      padding: 0 3px;
+      border: 2px solid var(--brown-900);
+      border-radius: 5px;
+      text-align: center;
+    }
+    
+  }
   .orderInfo {
     width: 210px;
     margin: 5px 0;
@@ -45,6 +64,8 @@
 }
 
 .form {
+  margin: 15px;
+
   input {
     margin-right: 10px;
   }
@@ -57,10 +78,29 @@
     width: 60px;
     text-align: center;
   }
+
+  button {
+    padding: 0.5rem 1rem;
+
+    font-weight: bold;
+    font-size: 18px;
+
+    border-radius: 5px;
+    background: var(--pink-900);
+    color: var(--white);
+
+    transition: filter .3s;
+
+    &:hover {
+      filter: brightness(0.8);
+    }
+    
+  }
 }
 
 .address {
   label {
     display: block;
+    width: fit-content;
   }
 }

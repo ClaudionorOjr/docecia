@@ -15,6 +15,7 @@ export type FirebaseCakesData = {
       slices: number
     }
   ]
+  imageURL: string
 }
 
 export function Menu(){
@@ -23,7 +24,7 @@ export function Menu(){
   
   useEffect(() => {
     async function retrieveFirebaseData() {
-      const cakeCollection = await firestore.collection('cakes').get()
+      const cakeCollection = await firestore.collection('cakes').orderBy("name").get()
       const docsData = cakeCollection.docs.map((doc) => {
         return doc.data() as FirebaseCakesData
       })

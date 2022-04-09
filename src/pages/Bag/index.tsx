@@ -7,18 +7,41 @@ import * as yup from 'yup'
 import { firestore } from '../../services/firebase'
 import { useAuth } from '../../hooks/useAuth'
 
-import cakeImg from '../../images/docecia.jpeg'
 import { GoTrashcan } from 'react-icons/go'
 import styles from './styles.module.scss'
-import { formatDateString } from '../../helpers'
+import { dateFormat } from '../../helpers/dateFormat'
+import { priceFormat } from '../../helpers/priceFormat'
+
+type OrderType = {
+  id: string
+  cakeOrderData: {
+    imageURL: string,
+    name: string,
+    size: string,
+    price: number,
+    batter: string,
+    fillings: string,
+    note: string
+  }
+}
+
+type FormCompletedOrderType = {
+  pickupLocal: boolean,
+  street: string,
+  streetNumber: string,
+  date: Date,
+  time: string,
+  phone: string,
+  payment: string,
+  createdAt: Date
+}
 
 export function Bag(){
-  const {user} = useAuth()
-  const [orders, setOrders] = useState<any[]>()
+  const { user, signInWithGoogle } = useAuth()
+  const [orders, setOrders] = useState<OrderType[]>()
   const [pickupLocal, setPickupLocal] = useState(false)
-  
-  // console.log(user?.id)
-  // console.log(orders)
+
+  console.log(orders)
 
   const validator = yup.object().shape({
     street: yup.string(),
@@ -30,7 +53,7 @@ export function Bag(){
     payment: yup.string().required()
   })
   
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormCompletedOrderType>({
     resolver: yupResolver(validator)
   })
 
@@ -45,36 +68,51 @@ export function Bag(){
     const queryOrderCollection = await firestore.collection("order").where("client.id", "==", user?.id).get()
     const docsData = queryOrderCollection.docs.map( (doc) => {
       return ({
-        data: doc.data().cake,
+        cakeOrderData: doc.data().cake,
         id:doc.id
-      }) 
+      }) as OrderType
     })
 
     setOrders(docsData)
   }
 
-  function deleteFirebaseOrder(id: any){
+  function deleteFirebaseOrder(id: string){
     firestore.collection("order").doc(id).delete().then(()=> {
       console.log("Document successfully deleted! ID: ", id)
       orderQueryFirebase()
     })
   }
 
-  function onSubmitButton(data: any){
-    console.log(data)
+  //! Terminar esse código para mostrar o preço
+  const totalPrice = orders?.map((order) => {
+    return order.cakeOrderData.price
+  })
+  
+  // let totalPrice =+ orders! ? (orders?.forEach((order) => {
+  //   return order.cakeOrderData.price
+  // })) : ("0,00")
+
+  console.log(totalPrice)
+
+  //! Se o user não estiver logado não pode enviar
+  async function onSubmitButton(completedOrderData: FormCompletedOrderType){
+    if(!user){
+      await signInWithGoogle()
+    } 
+    console.log(completedOrderData)
     firestore.collection("completedOrder").add({
       orders: orders,
       deliveryDate: {
-        pickupLocal: data?.pickupLocal,
+        pickupLocal: completedOrderData?.pickupLocal,
         addres: {
-          street: data?.street,
-          streetNumber: data?.streetNumber
+          street: completedOrderData?.pickupLocal ? ("") : (completedOrderData?.street),
+          streetNumber: completedOrderData?.pickupLocal ? ("") : (completedOrderData?.streetNumber)
         },
-        date: data?.date,
-        time: data?.time
+        date: completedOrderData?.date,
+        time: completedOrderData?.time
       },
-      phone: data?.phone,
-      payment: data?.payment,
+      phone: completedOrderData?.phone,
+      payment: completedOrderData?.payment,
       createdAt: new Date()
     }).then((completedOrderRef) => {
       console.log("Document written with ID: ", completedOrderRef.id)
@@ -82,27 +120,29 @@ export function Bag(){
     
     const encodedOrderMessage = window.encodeURIComponent(`*ENCOMENDA* 🗒️
     👤CLIENTE: ${user?.name}
-    📱Telefone: ${data?.phone}
+    📱Telefone: ${completedOrderData?.phone}
 
     *Pedido(s):*
     ${orders?.map((order)=>{
+
       return(
-        `🎂 ${order.data.name.toUpperCase()}
-        _Tamanho_: ${order.data.size}        
-        _Massa_: ${order.data.batter}
-        _Recheio_(s): ${order.data.fillings}
-        _Observação_: ${order.data.note}`
+        `🎂 ${order.cakeOrderData.name.toUpperCase()}
+        _Tamanho_: ${order.cakeOrderData.size}        
+        _Massa_: ${order.cakeOrderData.batter}
+        _Recheio_(s): ${order.cakeOrderData.fillings}
+        _Observação_: ${order.cakeOrderData.note}`
       )})}
     
     🛵 *ENTREGA:*
-    ${pickupLocal ? ("_*Retirada no local*_ 📍")
-    : (
-      `_*Rua:*_ ${data?.street}  _*Nº:*_ ${data?.streetNumber}`
+    ${pickupLocal ? (
+      "_*Retirada no local*_ 📍"
+      ) : (
+      `_*Rua:*_ ${completedOrderData?.street}  _*Nº:*_ ${completedOrderData?.streetNumber}`
       )}
-    _*Data:*_ ${formatDateString(data?.date)}  _*Hora:*_ ${data?.time} ⏰
+    _*Data:*_ ${dateFormat(completedOrderData?.date)}  _*Hora:*_ ${completedOrderData?.time} ⏰
     
     *Forma de pagament:*
-    ${data?.payment}
+    ${completedOrderData?.payment}
 
     Caro cliente, pedimos que após o envio da mensagem aguarde que iremos respondê-lo.
     `)
@@ -112,6 +152,7 @@ export function Bag(){
     setPickupLocal(false)
   }
 
+  //! Retirar esse código
   useEffect(()=>{
     console.log(errors)
   },[errors])
@@ -123,22 +164,24 @@ export function Bag(){
 
   return (
     <>
-      <div>
+      <div className={styles.orderContainer} >
         <h2>Pedidos</h2>
         {orders?.map((order)=> (
 
           <div className={styles.orderCard} key={orders.indexOf(order)}>
 
-            <img src={cakeImg} alt="Cake" />
+            <img src={order.cakeOrderData.imageURL} alt="Cake" />
 
             <div>
-              <h3>{order.data.name} <span>{order.data.size}</span> </h3>
+              <h3>{order.cakeOrderData.name} <span>{order.cakeOrderData.size}</span> </h3>
+
               <div className={styles.orderInfo}>
-                <p>Massa: {order.data.batter}</p>
-                <p>Recheio(s): {order.data.fillings}</p>
+                <p>Massa: {order.cakeOrderData.batter}</p>
+                <p>Recheio(s): {order.cakeOrderData.fillings}</p>
               </div>
+
               <div className={styles.orderPrice}>
-                <p> <span>R$</span> {order.data.price}</p>
+                <p>{priceFormat(order.cakeOrderData.price)}</p>
                 <GoTrashcan onClick={() => deleteFirebaseOrder(order.id)}/>
               </div>
             </div>
@@ -146,12 +189,12 @@ export function Bag(){
           </div>
         ))}
 
-        <hr />
       </div>
 
       <form onSubmit={handleSubmit(onSubmitButton)} className={styles.form}>
         <div>
           <h2>Dados</h2>
+
           <div className={styles.address}>
             <p>Endereço para entrega:</p>
 
@@ -202,7 +245,7 @@ export function Bag(){
           <input
               {...register("payment")}
               type="radio"
-              value='cartao'
+              value='Cartão'
               id='cartao'
             />
           <label htmlFor="cartao">Cartão</label>
@@ -210,7 +253,7 @@ export function Bag(){
           <input
               {...register("payment")}
               type="radio"
-              value="pix"
+              value="Pix"
               id='pix'
             />
           <label htmlFor="pix">Pix</label>
@@ -218,7 +261,7 @@ export function Bag(){
           <input
               {...register("payment")}
               type="radio"
-              value="dinheiro"
+              value="Dinheiro"
               id='dinheiro'
             />
           <label htmlFor="dinheiro">Dinheiro</label>
