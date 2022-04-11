@@ -53,3 +53,13 @@ const { register, handleSubmit, formState: { errors }} = useForm(resolver)
 
 - yup
 street: pickupLocal ? (yup.string()) : (yup.string().required("Tá errado aqui")),
+
+/**
+ * * Backlog:
+ * TODO Corrigir "Recheio(s)" no card de pedidos; ✔
+ * TODO Terminar estilização da página de sacola; ✔
+ * TODO Alterar número para Doce&Cia; 
+ * ! Hospedagem;
+ * ! Responsividade de todo site;
+ * ! Regras do firebase
+ */

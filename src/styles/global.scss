@@ -2,8 +2,15 @@
 :root {
   --white: #FFF;
   --red: #ff0000;
+  --pink-900: #bd134b;
+  --beige-300: #f2e9be;
+  --beige-450: #e6dcae;
+  --brown-300: #663300;
+  --brown-900: #3e2a1f;
   --gray-300: #a8a8b3;
   --gray-500: #333;
+  --gray-700: #1f2729;
+  --black: #121214;
 }
 
 * {
@@ -25,8 +32,8 @@
 }
 
 body {
-  background-color: var(--gray-500);
-  color: var(--white);
+  background-color: var(--beige-300);
+  color: var(--brown-900);
 }
 
 body, input, textarea, select, button {
@@ -45,9 +52,10 @@ a {
 }
 
 .errorMessage {
-  color: #ff0000;
+  color: var(--red);
+  font-weight: 400;
 }
 
 .page-content {
-  margin-top: 5rem;
+  margin-top: 6rem;
 }

@@ -1,6 +1,9 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
 import { auth, firebase } from "../services/firebase"
 
+import userImg from '../images/Avatar.svg';
+import { verifyErrorCodeFirebase } from "../helpers/verifyErrorCodeFirebase";
+
 type User = {
   id: string
   name: string
@@ -26,7 +29,7 @@ export function AuthContextProvider({children}: AuthContextProviderProps){
     const unsubscribe = auth.onAuthStateChanged(user => {
       if(user){
         const { displayName, photoURL, uid } = user
-
+        
         if(!displayName || !photoURL){
           throw new Error('Missing information from Google Account.')
         }
@@ -34,7 +37,7 @@ export function AuthContextProvider({children}: AuthContextProviderProps){
         setUser({
           id: uid,
           name: displayName,
-          avatar: photoURL
+          avatar: photoURL ? photoURL : userImg
         })
       }  
     })
@@ -47,20 +50,32 @@ export function AuthContextProvider({children}: AuthContextProviderProps){
   async function signInWithGoogle(){
     const provider = new firebase.auth.GoogleAuthProvider()
 
-    const result = await auth.signInWithPopup(provider)
+    try {
+      const result = await auth.signInWithPopup(provider)
 
-    if(result.user){
-      const { displayName, photoURL, uid } = result.user
+      if(result.user){
+        const { displayName, photoURL, uid } = result.user
 
-      if(!displayName || !photoURL){
-        throw new Error('Missing informatin from Google Account.')
+        if(!displayName || !photoURL){
+          throw new Error('Missing informatin from Google Account.')
+        }
+
+        setUser({
+          id: uid,
+          name: displayName,
+          avatar: photoURL ? photoURL : userImg
+        })
       }
 
-      setUser({
-        id: uid,
-        name: displayName,
-        avatar: photoURL
-      })
+    }catch(Error: any){
+      const errorCode = Error.code
+      let errorMessage = verifyErrorCodeFirebase(errorCode)
+
+      if (errorMessage == null){
+        errorMessage = Error.message
+      }
+
+      window.alert(errorMessage)
     }
   }
 

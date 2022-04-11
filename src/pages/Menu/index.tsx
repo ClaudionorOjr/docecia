@@ -1,8 +1,10 @@
-import styles from './styles.module.scss'
+import { useEffect, useState } from 'react'
 
 import { Card } from './Card'
 import { firestore } from '../../services/firebase'
-import { useEffect, useState } from 'react'
+
+import { GiStairsCake } from 'react-icons/gi';
+import styles from './styles.module.scss'
 
 export type FirebaseCakesData = {
   name: string
@@ -13,6 +15,7 @@ export type FirebaseCakesData = {
       slices: number
     }
   ]
+  imageURL: string
 }
 
 export function Menu(){
@@ -20,8 +23,8 @@ export function Menu(){
   const [cakes, setCakes] = useState<FirebaseCakesData[]>()
   
   useEffect(() => {
-    async function retrievedFirebaseData() {
-      const cakeCollection = await firestore.collection('cakes').get()
+    async function retrieveFirebaseData() {
+      const cakeCollection = await firestore.collection('cakes').orderBy("name").get()
       const docsData = cakeCollection.docs.map((doc) => {
         return doc.data() as FirebaseCakesData
       })
@@ -29,13 +32,16 @@ export function Menu(){
       setCakes(docsData)
     }
 
-    retrievedFirebaseData()
+    retrieveFirebaseData()
 
   },[])
 
   return (
     <div className={styles.menuContainer} id="menu">
-      <h2> Escolha do bolo </h2>
+      <h1> 
+        <GiStairsCake />
+        Escolha do Bolo
+      </h1>
 
       {cakes?.map((cake) => (
         <Card key={cakes.indexOf(cake)} cakeData={cake}/>

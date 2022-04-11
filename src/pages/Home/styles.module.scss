@@ -1,24 +1,20 @@
 .homeContainer {
   display: grid;
-  height: 100vh;
+  height: calc(100vh - 5rem);
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 5rem 1fr 1fr 5rem;
+  grid-template-rows: 1fr 5rem;
   grid-template-areas:
   "imgBg section"
-  "imgBg section"
-  "imgBg buttonWpp";
-
-  header {
-    grid-area: navbar;
-  }
+  "imgBg section";
 
   .backgroundImg{
     grid-area: imgBg;
+    height: 100%;
 
-    // width: 500px;
     margin: 0 auto;
     background-size: contain;
-    height: calc(100vh - 5rem);
+    border-radius: 15px;
+    box-shadow: 3px 3px 15px var(--brown-900);
   }
 
   section {
@@ -26,33 +22,54 @@
     
     img {
       display: block;
-      width: 270px;
-  
+      width: 350px;  
       margin: 2rem auto 0;
 
-      border-radius: 270px;
+      border-radius: 99rem;
+      background: linear-gradient(225deg, #fff9cb, #dad2ab);
+      box-shadow: -26px 26px 52px #d5cda7,
+                  26px -26px 52px #ffffd5;
     }
 
     p {
       margin: 2rem;
 
-      font-size: 22px;
-      text-align: justify;
+      font-family: 'Allura', cursive;
+      font-weight: bold;
+      font-size: 50px;
+      text-align: center;
+
+      & > a {
+        display: block;
+        font-weight: bold;
+        font-size: 25px;
+
+        
+        svg {
+          vertical-align: middle;
+          transition: color .2s;
+        }
+        
+        &:hover {
+          svg { color: var(--pink-900); }
+        }
+      }
     }
   }
 
-  button {
-    grid-area: buttonWpp ;
+  .wppButton{
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+
     display: flex;
     justify-content: flex-end;
-
-    width: 100%;
     
     background: none;
 
     img {  
       right: 0;
-      margin: 0 2rem;
+      margin: 0 5px;
     }
     
   }

@@ -1,10 +1,12 @@
 .headerContainer {
   height: 5rem;
   width: 100%;
+
   position: fixed;
   top: 0;
-  
-  background: #121214;
+
+  border-bottom: 1px solid var(--brown-300);
+  background: var(--beige-450);
 }
 
 .headerContent {
@@ -14,6 +16,21 @@
 
   display: flex;
   align-items: center;
+
+  .logo {
+    width: 175px;
+  }
+
+  .back {
+    svg {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    color: var(--brown-300);
+    font-weight: 700;
+  }
 
   nav {
     margin-left: 5rem;
@@ -25,7 +42,9 @@
       padding: 0 0.5rem;
       height: 5rem;
       line-height: 5rem;
-      color: #a8a8b3;
+      font-size: 18px;
+
+      color: var(--brown-300);
       transition: color 0.2s;
 
       & + a {
@@ -33,11 +52,12 @@
       }
 
       &:hover {
-        color: #FFF;
+        filter: brightness(0.8);
+        font-weight: 700;
       }
 
       &.active {
-        color: #FFF;
+        color: var(--brown-300);
         font-weight: bold;
       }
     }

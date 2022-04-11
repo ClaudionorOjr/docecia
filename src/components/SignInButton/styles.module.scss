@@ -1,20 +1,28 @@
 .signInButton {
-  height: 3rem;
-  border-radius: 3rem;
-  background: #1f2729;
-  border: 0;
-  padding: 0 1.55rem;
-
   display: flex;
+  height: 3rem;
+  padding: 0 1.55rem;
+  
   align-items: center;
   justify-content: center;
-
-  color: #FFF;
+  
+  border: 0;
+  border-radius: 3rem;
+  color: var(--pink-900);
+  font-weight: bold;
+  background: var(--beige-450);
+  box-shadow: -1px 5px 4px #c6bf9c, 
+              4px 2px 20px #ffffe0;
 
   transition: filter  0.2s;
 
   &:hover {
-    filter: brightness(0.8);
+    filter: brightness(0.9);
+  }
+
+  svg.entryIcon {
+    color: var(--pink-900);
+    margin-left: 5px;
   }
 
 }
@@ -23,9 +31,9 @@
 
   height: 3rem;
   border-radius: 3rem;
-  background: #1f2729;
+  background: var(--pink-900);
   border: 0;
-  padding: 0 .5rem;
+  padding: 0 .2rem;
 
   display: flex;
   align-items: center;
@@ -36,13 +44,13 @@
   transition: filter  0.2s;
 
   img {
-    margin-right: 1rem;
+    margin-right: 0.5rem;
     width: 40px;
     border-radius: 99px;
   }
 
   &:hover {
-    filter: brightness(0.8);
+    filter: brightness(0.9);
   }
   
   svg.closeIcon {

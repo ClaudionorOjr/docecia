@@ -1,9 +1,17 @@
 .menuContainer {
   height: 100vh;
-  padding-top: 5rem;
+  margin-top: 5rem;
 
-//   h2 {
-//     margin-top: 10rem;
-//     height: 5rem;
-//   }
+  h1 {
+    svg {
+      vertical-align: top;
+      margin-right: 10px;
+      color: var(--pink-900);
+    }
+    width: fit-content;
+    padding-right: 5px;
+    margin-left: 5rem;
+
+    border-bottom: 2px solid var(--brown-900);
+  }
 }
