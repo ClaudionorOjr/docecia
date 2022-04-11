@@ -9,10 +9,12 @@
 
   .backgroundImg{
     grid-area: imgBg;
+    height: 100%;
 
     margin: 0 auto;
     background-size: contain;
-    height: 100%;
+    border-radius: 15px;
+    box-shadow: 3px 3px 15px var(--brown-900);
   }
 
   section {
@@ -32,12 +34,30 @@
     p {
       margin: 2rem;
 
-      font-size: 22px;
-      text-align: justify;
+      font-family: 'Allura', cursive;
+      font-weight: bold;
+      font-size: 50px;
+      text-align: center;
+
+      & > a {
+        display: block;
+        font-weight: bold;
+        font-size: 25px;
+
+        
+        svg {
+          vertical-align: middle;
+          transition: color .2s;
+        }
+        
+        &:hover {
+          svg { color: var(--pink-900); }
+        }
+      }
     }
   }
 
-  a {
+  .wppButton{
     position: fixed;
     right: 15px;
     bottom: 15px;

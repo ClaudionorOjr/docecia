@@ -11,10 +11,9 @@ import pix from '../../images/pix.svg'
 import { FaMoneyBill } from 'react-icons/fa'
 import { GoTrashcan, GoCreditCard } from 'react-icons/go'
 import styles from './styles.module.scss'
+
 import { dateFormat } from '../../helpers/dateFormat'
 import { priceFormat } from '../../helpers/priceFormat'
-
-import './stylesTest.css'
 
 type OrderType = {
   id: string
@@ -40,15 +39,6 @@ type FormCompletedOrderType = {
   createdAt: Date
 }
 
-/**
- * * Backlog:
- * TODO Corrigir "Recheio(s)" no card de pedidos; ✔
- * TODO Terminar estilização da página de sacola; 
- * ! Hospedagem;
- * ! Responsividade de todo site;
- * ! Regras do firebase
- */
-
 export function Bag(){
   const { user, signInWithGoogle } = useAuth()
   const [orders, setOrders] = useState<OrderType[]>()
@@ -59,10 +49,10 @@ export function Bag(){
     street: yup.string(),
     streetNumber: yup.string(),
     pickupLocal: yup.bool(),
-    phone: yup.string().required(),
-    date: yup.date().required(),
-    time: yup.string().required(),
-    payment: yup.string().required()
+    phone: yup.string().required("Adicione um número de telefone para contato."),
+    date: yup.date().required().nullable().typeError("Necessário informar data da entrega."),
+    time: yup.string().required("Necessário informar hora da entrega."),
+    payment: yup.string().required("Informe qual meio de pagamento.").nullable()
   })
   
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormCompletedOrderType>({
@@ -72,9 +62,9 @@ export function Bag(){
   useEffect(()=>{
     if(user){
       orderQueryFirebase()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }
   },[user])
-
 
   async function orderQueryFirebase() {
     const queryOrderCollection = await firestore.collection("order").where("client.id", "==", user?.id).get()
@@ -88,6 +78,7 @@ export function Bag(){
     setOrders(docsData)
   }
 
+
   function deleteFirebaseOrder(id: string){
     firestore.collection("order").doc(id).delete().then(()=> {
       console.log("Document successfully deleted! ID: ", id)
@@ -95,12 +86,10 @@ export function Bag(){
     })
   }
 
-  //! Se o user não estiver logado não pode enviar
   async function onSubmitCompletedOrder(completedOrderData: FormCompletedOrderType){
     if(!user){
       await signInWithGoogle()
     } 
-    console.log(completedOrderData)
     firestore.collection("completedOrder").add({
       orders: orders,
       deliveryData: {
@@ -161,9 +150,7 @@ export function Bag(){
     window.open(`https://api.whatsapp.com/send?phone=5584981385287&text=${orderMessage}`)
   }
 
-  //! Retirar código sobre erros
   useEffect(()=>{
-    console.log(errors)
     
     function sumOrdersPrices(){
       const ordersPrices = orders?.map((order) => {
@@ -178,7 +165,7 @@ export function Bag(){
     }
 
     sumOrdersPrices()
-  },[errors, orders])
+  },[orders])
 
   return (
     <>
@@ -219,13 +206,13 @@ export function Bag(){
                   required={!pickupLocal}
                   disabled={pickupLocal}
                 />
-                {errors.street && <span>{errors.street.message}</span>}
             Nº <input 
                 {...register("streetNumber")}
                 type="number"
                 required={!pickupLocal}
                 disabled={pickupLocal}
               />
+
             <label htmlFor="pickup-local">
               <input 
                 {...register("pickupLocal")}
@@ -233,18 +220,19 @@ export function Bag(){
                 type="checkbox"
                 checked={pickupLocal}
                 onChange={(event) => {
-                  console.log(event.target.checked)
                   setPickupLocal(event.target.checked)
                 }}
               />
               Retirada no local
             </label>
           </div >
-          <div className={styles.deliveryDate}>
+
+          <div className={styles.deliveryData}>
             Telefone <input
                       {...register("phone")}
                       type="tel"
                     />
+            {errors.phone && <span className="errorMessage">{errors.phone.message}</span>}
             <p>Data e hora da entrega do pedido:</p>
             Data <input
                   {...register("date")}
@@ -254,6 +242,8 @@ export function Bag(){
                   {...register("time")}
                   type="time"
                 />
+            {errors.date && <span className="errorMessage">{errors.date.message}</span>}
+            {errors.time && <span className="errorMessage">{errors.time.message}</span>}
           </div>
         </div>
         
@@ -281,7 +271,7 @@ export function Bag(){
                     value="Pix"
                     id='pix'
                   />
-                  <img src={pix}/>
+                  <img src={pix} alt="pix logo"/>
                   Pix
                 </label>
                 <label htmlFor="dinheiro">
@@ -294,8 +284,8 @@ export function Bag(){
                   <FaMoneyBill />
                   Dinheiro
                 </label>
+                {errors.payment && <span className='errorMessage'>{errors.payment.message}</span>}
               </div>
-
               <div className={styles.totalPrice}>
                 <h3>Preço total: </h3>
                 <p>{priceFormat(totalPrice)}</p>

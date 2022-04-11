@@ -23,7 +23,6 @@ const cakeImages: any = {
   chocolate: chocolateCakeImage,
 }
 
-//! Alterei aqui e useEffect e nos campos dos formulários
 type MakeCakeType = {
   batter: string,
   fillings: string,
@@ -37,12 +36,12 @@ export function MakeCake(){
 
   const validator = yup.object().shape({
     fillings: yup.array(yup.string())
-      .required("Escolha até 2 recheio")
-      .min(1, "Escolha pelo menos 1 recheio")
-      .max(2, "Limitado a 2 recheios")
+      .required("Escolha até 2 recheio.")
+      .min(1, "Escolha pelo menos 1 recheio.")
+      .max(2, "Limitado a 2 recheios.")
       .nullable(),
     batter: yup.string()
-      .required("Escolha um tipo de massa"),
+      .required("Escolha um tipo de massa."),
     note: yup.string()
   });
 
@@ -153,9 +152,6 @@ export function MakeCake(){
         <button type="submit">Adicionar à sacola</button>
       </div>
 
-      <p>{cakeInfo?.name}</p>
-      <p>{cakeInfo?.price}</p>
-      <p>{cakeInfo?.size}</p>
     </form>
   )
 }

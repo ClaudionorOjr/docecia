@@ -1,4 +1,4 @@
-import { Link, useMatch, useLocation, Outlet} from 'react-router-dom'
+import { Link, useMatch, useLocation } from 'react-router-dom'
 import { SignInButton } from '../SignInButton'
 
 import { FiArrowLeftCircle } from "react-icons/fi";
@@ -44,8 +44,6 @@ export function Header(){
         <SignInButton />
         
       </div>
-
-      {/* <Outlet /> */}
     </header>
   )
 }

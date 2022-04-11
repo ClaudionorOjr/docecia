@@ -7,7 +7,6 @@ import { CakeInfoContext } from '../../../routes'
 
 import { priceFormat } from '../../../helpers/priceFormat'
 
-import cakeImg from '../../../images/docecia.jpeg'
 import styles from './styles.module.scss'
 
 type CardProps = {
@@ -81,8 +80,7 @@ export function Card({ cakeData }: CardProps){
         
         <p>Serve até {slices} fatias</p>
         <p className={styles.stylePrice}>{priceFormat(price)}</p>
-      </div>  
-      
+      </div>
       <button onClick={handleMakeCake}>Montar bolo</button>
     </div>
   )

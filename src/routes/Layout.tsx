@@ -9,7 +9,7 @@ interface Props {
 function Layout({ noNavbar, className = '' }: Props) {
   return (
     <>
-      {!noNavbar && <Header />}
+      {<Header />}
       <div className={`${!noNavbar && 'page-content'} ${className}`}>
         <Outlet />
       </div>

@@ -6,7 +6,7 @@ import { Home } from "../pages/Home"
 import { MakeCake } from "../pages/MakeCake"
 import { Bag } from "../pages/Bag"
 import Layout from "./Layout";
-import { Header } from "../components/Header";
+import { ScrollToTop } from "../components/ScrollToTop";
 
 type CakeInfoType = {
   imageURL: string
@@ -27,9 +27,10 @@ export function AppRoutes(){
 
   return (
     <CakeInfoContext.Provider value={{cakeInfo, setCakeInfo}}>
+      <ScrollToTop />
       <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />}/>
+        <Route element={<Layout/>}>
+          <Route path="/" element={<Home />} />
           <Route path="/makecake" element={<MakeCake />}/>
           <Route path="/bag" element={<Bag />}/>
 				</Route>

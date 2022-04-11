@@ -141,8 +141,12 @@
   }
 }
 
-.deliveryDate {
+.deliveryData {
   font-weight: 700;
+
+  span {
+    display: block;
+  }
 
   p {
     margin-top: 10px;
