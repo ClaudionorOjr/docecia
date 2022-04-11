@@ -7,10 +7,14 @@ import * as yup from 'yup'
 import { firestore } from '../../services/firebase'
 import { useAuth } from '../../hooks/useAuth'
 
-import { GoTrashcan } from 'react-icons/go'
+import pix from '../../images/pix.svg'
+import { FaMoneyBill } from 'react-icons/fa'
+import { GoTrashcan, GoCreditCard } from 'react-icons/go'
 import styles from './styles.module.scss'
 import { dateFormat } from '../../helpers/dateFormat'
 import { priceFormat } from '../../helpers/priceFormat'
+
+import './stylesTest.css'
 
 type OrderType = {
   id: string
@@ -20,7 +24,7 @@ type OrderType = {
     size: string,
     price: number,
     batter: string,
-    fillings: string,
+    fillings: string[],
     note: string
   }
 }
@@ -36,12 +40,20 @@ type FormCompletedOrderType = {
   createdAt: Date
 }
 
+/**
+ * * Backlog:
+ * TODO Corrigir "Recheio(s)" no card de pedidos; ✔
+ * TODO Terminar estilização da página de sacola; 
+ * ! Hospedagem;
+ * ! Responsividade de todo site;
+ * ! Regras do firebase
+ */
+
 export function Bag(){
   const { user, signInWithGoogle } = useAuth()
   const [orders, setOrders] = useState<OrderType[]>()
   const [pickupLocal, setPickupLocal] = useState(false)
-
-  console.log(orders)
+  const [totalPrice, setTotalPrice] = useState<number>(0)
 
   const validator = yup.object().shape({
     street: yup.string(),
@@ -83,26 +95,15 @@ export function Bag(){
     })
   }
 
-  //! Terminar esse código para mostrar o preço
-  const totalPrice = orders?.map((order) => {
-    return order.cakeOrderData.price
-  })
-  
-  // let totalPrice =+ orders! ? (orders?.forEach((order) => {
-  //   return order.cakeOrderData.price
-  // })) : ("0,00")
-
-  console.log(totalPrice)
-
   //! Se o user não estiver logado não pode enviar
-  async function onSubmitButton(completedOrderData: FormCompletedOrderType){
+  async function onSubmitCompletedOrder(completedOrderData: FormCompletedOrderType){
     if(!user){
       await signInWithGoogle()
     } 
     console.log(completedOrderData)
     firestore.collection("completedOrder").add({
       orders: orders,
-      deliveryDate: {
+      deliveryData: {
         pickupLocal: completedOrderData?.pickupLocal,
         addres: {
           street: completedOrderData?.pickupLocal ? ("") : (completedOrderData?.street),
@@ -113,6 +114,7 @@ export function Bag(){
       },
       phone: completedOrderData?.phone,
       payment: completedOrderData?.payment,
+      totalPrice: totalPrice,
       createdAt: new Date()
     }).then((completedOrderRef) => {
       console.log("Document written with ID: ", completedOrderRef.id)
@@ -130,9 +132,10 @@ export function Bag(){
         _Tamanho_: ${order.cakeOrderData.size}        
         _Massa_: ${order.cakeOrderData.batter}
         _Recheio_(s): ${order.cakeOrderData.fillings}
-        _Observação_: ${order.cakeOrderData.note}`
+        _Observação_: ${order.cakeOrderData.note}
+      
+      `
       )})}
-    
     🛵 *ENTREGA:*
     ${pickupLocal ? (
       "_*Retirada no local*_ 📍"
@@ -141,7 +144,9 @@ export function Bag(){
       )}
     _*Data:*_ ${dateFormat(completedOrderData?.date)}  _*Hora:*_ ${completedOrderData?.time} ⏰
     
-    *Forma de pagament:*
+    *Preço total:*
+    ${priceFormat(totalPrice)}
+    *Forma de pagamento:*
     ${completedOrderData?.payment}
 
     Caro cliente, pedimos que após o envio da mensagem aguarde que iremos respondê-lo.
@@ -151,49 +156,59 @@ export function Bag(){
     reset()
     setPickupLocal(false)
   }
-
-  //! Retirar esse código
-  useEffect(()=>{
-    console.log(errors)
-  },[errors])
-
-
+  
   function redirecionar(orderMessage: string){
     window.open(`https://api.whatsapp.com/send?phone=5584981385287&text=${orderMessage}`)
   }
 
+  //! Retirar código sobre erros
+  useEffect(()=>{
+    console.log(errors)
+    
+    function sumOrdersPrices(){
+      const ordersPrices = orders?.map((order) => {
+        return order.cakeOrderData.price
+      })
+    
+      const sumPrices = ordersPrices ? (
+          ordersPrices?.reduce((total, price)=> total + price, 0)
+        ) : (0)
+  
+      setTotalPrice(sumPrices)
+    }
+
+    sumOrdersPrices()
+  },[errors, orders])
+
   return (
     <>
       <div className={styles.orderContainer} >
-        <h2>Pedidos</h2>
-        {orders?.map((order)=> (
+        <h1>Pedidos</h1>
 
-          <div className={styles.orderCard} key={orders.indexOf(order)}>
-
-            <img src={order.cakeOrderData.imageURL} alt="Cake" />
-
-            <div>
-              <h3>{order.cakeOrderData.name} <span>{order.cakeOrderData.size}</span> </h3>
-
-              <div className={styles.orderInfo}>
-                <p>Massa: {order.cakeOrderData.batter}</p>
-                <p>Recheio(s): {order.cakeOrderData.fillings}</p>
-              </div>
-
-              <div className={styles.orderPrice}>
-                <p>{priceFormat(order.cakeOrderData.price)}</p>
-                <GoTrashcan onClick={() => deleteFirebaseOrder(order.id)}/>
+        <div className={styles.orderContent} id='testeScrollbar'>
+          {orders?.map((order)=> (
+            <div className={styles.orderCard} key={orders.indexOf(order)}>
+              <img src={order.cakeOrderData.imageURL} alt="Cake" />
+              <div>
+                <h3>{order.cakeOrderData.name} <span>{order.cakeOrderData.size}</span> </h3>
+                <div className={styles.orderInfo}>
+                  <p>Massa: {order.cakeOrderData.batter}</p>
+                  <p>Recheio(s): {order.cakeOrderData.fillings.join(',')}</p>
+                </div>
+                <div className={styles.orderPrice}>
+                  <p>{priceFormat(order.cakeOrderData.price)}</p>
+                  <GoTrashcan onClick={() => deleteFirebaseOrder(order.id)}/>
+                </div>
               </div>
             </div>
-
-          </div>
-        ))}
+          ))}
+        </div>
 
       </div>
 
-      <form onSubmit={handleSubmit(onSubmitButton)} className={styles.form}>
+      <form onSubmit={handleSubmit(onSubmitCompletedOrder)} className={styles.form}>
         <div>
-          <h2>Dados</h2>
+          <h1>Dados</h1>
 
           <div className={styles.address}>
             <p>Endereço para entrega:</p>
@@ -224,53 +239,75 @@ export function Bag(){
               />
               Retirada no local
             </label>
+          </div >
+          <div className={styles.deliveryDate}>
+            Telefone <input
+                      {...register("phone")}
+                      type="tel"
+                    />
+            <p>Data e hora da entrega do pedido:</p>
+            Data <input
+                  {...register("date")}
+                  type="date"
+                />
+            Hora <input
+                  {...register("time")}
+                  type="time"
+                />
           </div>
-          Telefone <input 
-                    {...register("phone")}
-                    type="tel"
-                  />
-          <p>Data e hora da entrega do pedido:</p>
-          Data <input 
-                {...register("date")}
-                type="date" 
-              />
-          Hora <input 
-                {...register("time")}
-                type="time"
-              />
         </div>
         
-        <div>
-          <h2>Forma de Pagamento</h2>
-          <input
-              {...register("payment")}
-              type="radio"
-              value='Cartão'
-              id='cartao'
-            />
-          <label htmlFor="cartao">Cartão</label>
-          
-          <input
-              {...register("payment")}
-              type="radio"
-              value="Pix"
-              id='pix'
-            />
-          <label htmlFor="pix">Pix</label>
+        <div className={styles.payment}>
+          <h1>Forma de Pagamento</h1>
 
-          <input
-              {...register("payment")}
-              type="radio"
-              value="Dinheiro"
-              id='dinheiro'
-            />
-          <label htmlFor="dinheiro">Dinheiro</label>
+            <div className={styles.paymentContent}>
+
+              <div className={styles.paymentMethods}>
+                <label htmlFor="cartao">
+                  <input
+                    {...register("payment")}
+                    type="radio"
+                    value='Cartão'
+                    id='cartao'
+                  />
+                  <GoCreditCard />
+                  Cartão
+                </label>
+              
+                <label htmlFor="pix">
+                  <input
+                    {...register("payment")}
+                    type="radio"
+                    value="Pix"
+                    id='pix'
+                  />
+                  <img src={pix}/>
+                  Pix
+                </label>
+                <label htmlFor="dinheiro">
+                  <input
+                    {...register("payment")}
+                    type="radio"
+                    value="Dinheiro"
+                    id='dinheiro'
+                  />
+                  <FaMoneyBill />
+                  Dinheiro
+                </label>
+              </div>
+
+              <div className={styles.totalPrice}>
+                <h3>Preço total: </h3>
+                <p>{priceFormat(totalPrice)}</p>
+              </div>
+              
+            </div>
         </div>
 
         <button 
           type='submit'
           onClick={() => redirecionar}
-        >Enviar</button>
+        >Enviar pedido</button>
       </form>
     </>
   )

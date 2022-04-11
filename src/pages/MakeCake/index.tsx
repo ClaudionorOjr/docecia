@@ -61,7 +61,7 @@ export function MakeCake(){
     setValue('fillings', '');
   }, []);
 
-  function onSubmitButton(makeCakeData: MakeCakeType){
+  function onSubmitOrder(makeCakeData: MakeCakeType){
     console.log(makeCakeData)
     firestore.collection("order").add({
       client: {
@@ -85,7 +85,7 @@ export function MakeCake(){
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmitButton)} className={styles.formContainer}>
+    <form onSubmit={handleSubmit(onSubmitOrder)} className={styles.formContainer}>
 
       <h1 className={styles.sectionTitle}>
         <SiCakephp />

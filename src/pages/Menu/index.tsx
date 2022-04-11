@@ -38,10 +38,10 @@ export function Menu(){
 
   return (
     <div className={styles.menuContainer} id="menu">
-      <h2> 
+      <h1> 
         <GiStairsCake />
         Escolha do Bolo
-      </h2>
+      </h1>
 
       {cakes?.map((cake) => (
         <Card key={cakes.indexOf(cake)} cakeData={cake}/>
