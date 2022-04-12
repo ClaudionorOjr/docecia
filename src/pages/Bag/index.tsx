@@ -62,8 +62,8 @@ export function Bag(){
   useEffect(()=>{
     if(user){
       orderQueryFirebase()
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[user])
 
   async function orderQueryFirebase() {

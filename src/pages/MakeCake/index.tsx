@@ -58,7 +58,7 @@ export function MakeCake(){
   useEffect(() => {
     setValue('batter', '');
     setValue('fillings', '');
-  }, []);
+  }, [setValue]);
 
   function onSubmitOrder(makeCakeData: MakeCakeType){
     console.log(makeCakeData)
