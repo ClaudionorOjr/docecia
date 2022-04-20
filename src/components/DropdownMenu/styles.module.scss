@@ -1,0 +1,119 @@
+.dropdownMenu {
+  display: none;
+  
+  .hamburgerOpen {
+    position: relative;
+    width: 28px;
+    height: 4px;
+    top: 45%;
+    margin: auto;
+    border-radius: 99px;
+    background: var(--brown-900);
+
+    transition: transform 2s;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      width: 28px;
+      height: 4px;
+      border-radius: 99px;
+      background: var(--brown-900);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      width: 28px;
+      height: 4px;
+      border-radius: 99px;
+      background: var(--brown-900);
+    }
+  }
+
+  .menuClose {
+    display: none;
+  }
+}
+
+@media screen and(max-width:830px) {
+  .dropdownMenu {
+    display: block;
+    height: 50px;
+    width: 50px;
+    border: 2px solid var(--brown-900);
+    border-radius: 99px;
+    margin: 2px;
+
+    .hamburgerClose {
+      position: relative;
+      width: 28px;
+      height: 4px;
+      top: 45%;
+      margin: auto;
+
+      border-radius: 99px;
+      background: transparent;
+
+      transition: transform 2s;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0px;
+        width: 28px;
+        height: 4px;
+        border-radius: 99px;
+        background: var(--brown-900);
+
+        transform: rotate(135deg);
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0px;
+        width: 28px;
+        height: 4px;
+        border-radius: 99px;
+        background: var(--brown-900);
+
+        transform: rotate(225deg);   
+      }
+    }
+    
+    .menuOpen {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      top: 60px;
+      width: 100px;
+      height: fit-content;
+      margin: 0;
+      border-radius: 5px;
+      background-color: var(--beige-450);
+
+      a {
+        height: fit-content;
+        line-height: 30px;
+        margin: 0;
+        font-weight: 400;
+        color: var(--brown-300);
+        border-bottom: 2px solid var(--brown-900);
+        
+        & + a {
+          margin-left: 0;
+          border-radius: 0 0 5px 5px;
+        }
+
+        &.active {
+          color: var(--brown-300);
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+}
