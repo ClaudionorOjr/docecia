@@ -1,16 +1,11 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "../components/Header";
 
-interface Props {
-  noNavbar?: boolean;
-  className?: string;
-}
-
-function Layout({ noNavbar, className = '' }: Props) {
+function Layout() {
   return (
     <>
       {<Header />}
-      <div className={`${!noNavbar && 'page-content'} ${className}`}>
+      <div className={'page-content'}>
         <Outlet />
       </div>
     </>

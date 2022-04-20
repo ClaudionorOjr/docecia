@@ -1,6 +1,6 @@
 .cakeCard {
   display: flex;
-  width: 800px;
+  max-width: 800px;
   margin: 2rem auto;
 
   border-radius: 5px;
@@ -11,7 +11,7 @@
   img {
     border-radius: 5px;
     margin: 1rem;
-    width: 220px;
+    width: auto;
     height: 250px;
   }
 
@@ -92,5 +92,29 @@
     &:hover {
       filter: brightness(0.8);
     }
+  }
+}
+
+@media screen and (max-width: 830px) {
+  .cakeCard {
+    flex-wrap: wrap;
+    flex-direction: column;
+    
+    min-width: 300px;
+    
+    margin: 0 auto;
+
+    .cakeContent {
+      margin: 0 1rem;
+
+      p {
+        margin-top: 5px;
+      }
+    }
+
+    button {
+      margin: 1rem;
+    }
+
   }
 }

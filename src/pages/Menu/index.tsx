@@ -43,9 +43,11 @@ export function Menu(){
         Escolha do Bolo
       </h1>
 
-      {cakes?.map((cake) => (
-        <Card key={cakes.indexOf(cake)} cakeData={cake}/>
-      ))}
+      <div className={styles.menuContent}>
+        {cakes?.map((cake) => (
+          <Card key={cakes.indexOf(cake)} cakeData={cake}/>
+        ))}
+      </div>
       
     </div>
   )

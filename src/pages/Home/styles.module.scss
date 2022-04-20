@@ -74,3 +74,24 @@
     
   }
 }
+
+@media screen and (max-width: 767px) {
+  .homeContainer {
+    display: flex;
+    flex-direction: column;
+    
+    .backgroundImg {
+      display: none;
+      width: 200px;
+      height: 295px;
+    }
+
+    .wppButton {
+      right: 10px;
+      img {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+}

@@ -96,11 +96,20 @@
     visibility: hidden;
     position: absolute;
   }
-
-  input:checked + label, label:hover {
+  
+  input:checked + label {
     background: var(--pink-900);
     color: var(--white);
     border-color: var(--pink-900);
+  }
+
+  // Resolve the hover problem
+  @media (hover: hover){
+    input:checked + label, label:hover {
+      background: var(--pink-900);
+      color: var(--white);
+      border-color: var(--pink-900);
+    }
   }
 }
 

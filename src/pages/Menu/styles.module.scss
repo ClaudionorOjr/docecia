@@ -1,6 +1,6 @@
 .menuContainer {
-  height: 100vh;
-  margin-top: 5rem;
+  height: fit-content;
+  margin: 5rem 2rem 1rem;
 
   h1 {
     svg {
@@ -13,5 +13,23 @@
     margin-left: 5rem;
 
     border-bottom: 2px solid var(--brown-900);
+  }
+
+  .menuContent {
+    margin: 2rem 0;
+  }
+}
+
+@media screen and (max-width: 830px){
+  .menuContainer {
+    h1 {
+      margin-left: 0;
+    }
+  }
+  .menuContent {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+
   }
 }

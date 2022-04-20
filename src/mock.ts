@@ -1,27 +1,32 @@
 export const mockData = {
-  recheios: [
+  fillingsCake: [
     {
       id: "ninho",
       key: "ninho",
       name: "ninho"
     },
     {
-      id: "chocolate",
-      key: "chocolate",
-      name: "chocolate"
+      id: "beijinho",
+      key: "beijinho",
+      name: "beijinho"
     },
     {
-      id: "duo",
-      key: "duo",
-      name: "duo"
+      id: "brigadeiro",
+      key: "brigadeiro",
+      name: "brigadeiro"
     },
     {
       id: "crocante",
       key: "crocante",
       name: "crocante"
+    },
+    {
+      id: "ninho com nutella",
+      key: "ninho com nutella",
+      name: "ninho com nutella"
     }
   ],
-  massas: [
+  battersCake: [
     {
       id: "branca-amanteigada",
       key: "brancaAmanteigada",

@@ -4,6 +4,7 @@ import { SignInButton } from '../SignInButton'
 import { FiArrowLeftCircle } from "react-icons/fi";
 import logoImg from '../../images/docecia_logo.png';
 import styles from './styles.module.scss'
+import { DropdownMenu } from '../DropdownMenu';
 
 
 export function Header(){
@@ -38,6 +39,8 @@ export function Header(){
               </Link>
 
             </nav>
+
+            <DropdownMenu/>
           </>
         )}        
         

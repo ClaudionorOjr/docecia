@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { mockData } from '../../mock';
 
-
 import chocolateCakeImage from '../../images/cake_chocolate.png';
 import amanteigadoCakeImage from '../../images/cake_amanteigado.png';
 
@@ -93,7 +92,7 @@ export function MakeCake(){
       <div className={styles.formSection}>
         <div className={styles.batterSection}>
           {
-            mockData.massas.map((batter) => (
+            mockData.battersCake.map((batter) => (
               <div 
                 key={`${batter.name}`}
                 className={`${styles.cakeBatterOption} ${styles.inputOption}`}
@@ -120,7 +119,7 @@ export function MakeCake(){
       <div className={styles.formSection}>
         <div className={styles.fillingSection}>
           {
-              mockData.recheios.map((fillings) => (
+              mockData.fillingsCake.map((fillings) => (
                 <div 
                   key={`${fillings.id}`}
                   className={`${styles.cakeFillingOption} ${styles.inputOption}`}

@@ -30,6 +30,7 @@
 .signOutButton {
 
   height: 3rem;
+  // width: 360px;
   border-radius: 3rem;
   background: var(--pink-900);
   border: 0;
@@ -55,5 +56,19 @@
   
   svg.closeIcon {
     margin: 0 .5rem;
+  }
+}
+
+@media screen and (max-width: 830px) {
+  .signOutButton {
+    width: 275px;
+    img {
+      width: 38px;
+    }
+
+    .closeIcon {
+      width: 20px;
+      height: 20px;
+    }
   }
 }

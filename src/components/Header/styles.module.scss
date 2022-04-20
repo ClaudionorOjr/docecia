@@ -68,3 +68,22 @@
   }
 
 }
+
+@media screen and (max-width: 830px) {
+  .headerContainer {
+    min-width: 375px;
+    background: var(--beige-450);
+  }
+
+  .headerContent {
+    padding: 0 .5rem;
+    justify-content: space-between;
+
+    .logo, nav {
+      display: none;
+    }
+
+    
+
+  }
+}
