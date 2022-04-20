@@ -89,16 +89,18 @@
       flex-direction: column;
       position: relative;
       top: 60px;
-      width: 100px;
+      width: 130px;
       height: fit-content;
       margin: 0;
       border-radius: 5px;
       background-color: var(--beige-450);
+      box-shadow: -2px 1px 4px var(--brown-900);
 
       a {
         height: fit-content;
-        line-height: 30px;
+        line-height: 50px;
         margin: 0;
+        font-size: 30px;
         font-weight: 400;
         color: var(--brown-300);
         border-bottom: 2px solid var(--brown-900);

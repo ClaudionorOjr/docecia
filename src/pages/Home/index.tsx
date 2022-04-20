@@ -12,7 +12,6 @@ export function Home(){
     <>
       <div className={styles.homeContainer} id="home">
         
-        <img src={bgImg} alt="" className={styles.backgroundImg}/>
 
         <section>
           <img src={logoImg} alt="Logo Doce&Cia" />
@@ -24,6 +23,8 @@ export function Home(){
           </p>
         </section>
 
+        <img src={bgImg} alt="" className={styles.backgroundImg}/>
+        
         <a href="https://api.whatsapp.com/send?phone=5584981449946" target="_blank" rel="noreferrer" className={styles.wppButton}>
           <img src={whatsappImg} alt="Whatsapp button" />
         </a>

@@ -9,6 +9,7 @@
   border: 0;
   border-radius: 3rem;
   color: var(--pink-900);
+  font-size: 20px;
   font-weight: bold;
   background: var(--beige-450);
   box-shadow: -1px 5px 4px #c6bf9c, 
@@ -38,7 +39,7 @@
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
   color: #FFF;
 
