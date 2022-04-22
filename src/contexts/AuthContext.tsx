@@ -3,6 +3,7 @@ import { auth, firebase } from "../services/firebase"
 
 import userImg from '../images/Avatar.svg';
 import { verifyErrorCodeFirebase } from "../helpers/verifyErrorCodeFirebase";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type User = {
   id: string
@@ -22,8 +23,12 @@ type AuthContextProviderProps = {
 
 export const AuthContext = createContext({} as AuthContextType) //* O formato que será armazenado no contexto
 
+const admin = process.env.REACT_APP_USER_ADMIN
+
 export function AuthContextProvider({children}: AuthContextProviderProps){
   const [user, setUser] = useState<User>()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -65,6 +70,14 @@ export function AuthContextProvider({children}: AuthContextProviderProps){
           name: displayName,
           avatar: photoURL ? photoURL : userImg
         })
+      }
+
+      if(result.user?.email === admin){
+        navigate('/dashboard')
+      }
+
+      if(pathname === '/dashboard' && result.user?.email !== admin){
+        navigate('/')
       }
 
     }catch(Error: any){
