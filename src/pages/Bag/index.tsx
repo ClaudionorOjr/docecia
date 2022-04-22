@@ -15,7 +15,7 @@ import styles from './styles.module.scss'
 import { dateFormat } from '../../helpers/dateFormat'
 import { priceFormat } from '../../helpers/priceFormat'
 
-type OrderType = {
+export type OrderType = {
   id: string
   cakeOrderData: {
     imageURL: string,
@@ -69,6 +69,7 @@ export function Bag(){
   async function orderQueryFirebase() {
     const queryOrderCollection = await firestore.collection("order").where("client.id", "==", user?.id).get()
     const docsData = queryOrderCollection.docs.map( (doc) => {
+      // Rever as informações do cliente que não estão sendo coletadas.
       return ({
         cakeOrderData: doc.data().cake,
         id:doc.id
@@ -94,12 +95,16 @@ export function Bag(){
       orders: orders,
       deliveryData: {
         pickupLocal: completedOrderData?.pickupLocal,
-        addres: {
+        address: {
           street: completedOrderData?.pickupLocal ? ("") : (completedOrderData?.street),
           streetNumber: completedOrderData?.pickupLocal ? ("") : (completedOrderData?.streetNumber)
         },
         date: completedOrderData?.date,
         time: completedOrderData?.time
+      },
+      client: {
+        name: user?.name,
+        idClient: user?.id
       },
       phone: completedOrderData?.phone,
       payment: completedOrderData?.payment,
@@ -172,7 +177,7 @@ export function Bag(){
       <div className={styles.orderContainer} >
         <h1>Pedidos</h1>
 
-        <div className={styles.orderContent} id='testeScrollbar'>
+        <div className={styles.orderContent}>
           {orders?.map((order)=> (
             <div className={styles.orderCard} key={orders.indexOf(order)}>
               <img src={order.cakeOrderData.imageURL} alt="Cake" />

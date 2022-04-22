@@ -2,10 +2,11 @@ import { createContext, SetStateAction, useState } from "react";
 
 import { Routes, Route } from "react-router-dom";
 
+import Layout from "./Layout";
 import { Home } from "../pages/Home"
 import { MakeCake } from "../pages/MakeCake"
 import { Bag } from "../pages/Bag"
-import Layout from "./Layout";
+import { Dashboard } from "../pages/Dashboard";
 import { ScrollToTop } from "../components/ScrollToTop";
 
 type CakeInfoType = {
@@ -34,6 +35,7 @@ export function AppRoutes(){
           <Route path="/makecake" element={<MakeCake />}/>
           <Route path="/bag" element={<Bag />}/>
 				</Route>
+        <Route path="/dashboard" element={<Dashboard/>} />
       </Routes>
     </CakeInfoContext.Provider>
   )
