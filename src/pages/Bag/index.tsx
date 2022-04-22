@@ -181,7 +181,7 @@ export function Bag(){
           {orders?.map((order)=> (
             <div className={styles.orderCard} key={orders.indexOf(order)}>
               <img src={order.cakeOrderData.imageURL} alt="Cake" />
-              <div>
+              <div className={styles.orderInfoCotainer}>
                 <h3>{order.cakeOrderData.name} <span>{order.cakeOrderData.size}</span> </h3>
                 <div className={styles.orderInfo}>
                   <p>Massa: {order.cakeOrderData.batter}</p>
